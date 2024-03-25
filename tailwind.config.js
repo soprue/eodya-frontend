@@ -8,6 +8,7 @@ module.exports = {
       },
       fontSize: {},
       colors: {
+        primary : "#FF6060",
         gray: {
           950: '#0F0F0F',
           900: '#282828',
