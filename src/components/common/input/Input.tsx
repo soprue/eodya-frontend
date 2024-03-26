@@ -20,7 +20,7 @@ export default function Input({
 
   return (
     <div
-        className={`${className ? className : ""} w-full relative rounded-[10px] h-[46px] font-pretendard overflow-hidden`}
+        className={`w-full relative rounded-[10px] h-[46px] font-pretendard overflow-hidden ${className ? className : ""}`}
     >
         <input
             className="px-5 min-w-0 w-full h-full text-base tracking-[-0.02em] leading-4 outline-none placeholder:text-gray-300"
