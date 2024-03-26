@@ -6,8 +6,8 @@ import Layout from "./components/layout/Layout";
 import { useAppSelector } from "./store/hooks";
 
 const NewRegisterPage = lazy(() => import("./page/new/index"));
-const NewReviewPage = lazy(() => import("./page/new/ReviewPage"));
-const NewSpotPage = lazy(() => import("./page/new/SpotPage"));
+const NewReviewPage = lazy(() => import("./page/new/Review"));
+const NewSpotPage = lazy(() => import("./page/new/Spot"));
 
 function App() {
   return (
