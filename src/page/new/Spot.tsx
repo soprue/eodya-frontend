@@ -10,6 +10,10 @@ function NewSpotPage() {
 
   const handleSpotSearchChange = (data: any) => {
     console.log(1);
+    // setFormValues((prevValues) => ({
+    //   ...prevValues,
+    //   data,
+    // }));
   };
 
   const handleSpotInfoChange = (data: any) => {};
