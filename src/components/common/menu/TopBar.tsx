@@ -8,12 +8,12 @@ import prev from "../../../assets/image/icon/prev.svg";
 
 */
 
-export default function TopBar({children} : {children? : React.ReactNode}) {
+export default function TopBar({className,children} : {className? : React.ReactNode, children? : React.ReactNode}) {
 
     const navigate = useNavigate();
 
   return (
-    <div className="h-14 relative font-pretendard bg-white">
+    <div className={`h-14 relative font-pretendard bg-white ${className ? className : ""}`}>
         <button type="button" className="absolute top-1/2 -translate-y-1/2 left-4" onClick={()=>navigate(-1)}>
             <img src={prev} alt="이전 페이지" />
         </button>
