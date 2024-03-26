@@ -1,12 +1,13 @@
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
 import { SpotView } from "../../components/main/SpotView";
 import { LocationBtn } from "../../components/main/Btn/LocationBtn";
 import { SpotSmall } from "../../components/main/SpotSmall";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
+import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
 
 export default function Main() {
 
@@ -16,6 +17,22 @@ export default function Main() {
     // 지도 위치 변경시 panto를 이용할지에 대해서 정의
     isPanto: false,
   });
+
+  const getPostion = useCallback( async ()=>{
+
+    const result = await getCurrentLocation();
+
+    if(!result) return;
+
+    const {center,error} = result;
+    if(!center) return;
+    setState({center,isPanto : true});
+
+  },[]);
+
+  useEffect(()=>{
+    getPostion();
+  },[]);
 
   const [viewOpen,setViewOpen] = useState(false);
   const [smallOpen,setSmallOpen] = useState(false);
@@ -60,9 +77,7 @@ export default function Main() {
 
         <div className="absolute bottom-[70px] z-50 w-full">
           <div className="px-4 mb-5">
-            <LocationBtn onClick={()=>{
-              setState({center : {lat: 33.55635, lng: 126.795841} ,isPanto : true})}
-            }/>
+            <LocationBtn onClick={getPostion}/>
           </div>
           {
             smallOpen &&  <SpotSmall onClick={()=>setViewOpen(!viewOpen)}/>
