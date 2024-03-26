@@ -2,6 +2,7 @@ import { CustomOverlayMap, Map } from "react-kakao-maps-sdk";
 
 import Input from "../../common/input/Input";
 import Btn from "../../common/btn/Btn";
+import BasicMarker from "../../common/marker/BasicMarker";
 
 interface SpotSearchProps {
   onNext: (data: any) => void;
@@ -16,9 +17,7 @@ function SpotSearch({ onNext }: SpotSearchProps) {
           className="h-full w-full"
           level={3}
         >
-          {/* <CustomOverlayMap position={{ lat: 37.566826, lng: 126.9786567 }}>
-          <div className="overlay">Here!</div>
-        </CustomOverlayMap> */}
+          <BasicMarker position={{ lat: 37.566826, lng: 126.9786567 }} />
         </Map>
       </div>
 
