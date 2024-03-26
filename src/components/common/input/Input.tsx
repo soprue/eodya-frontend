@@ -11,7 +11,7 @@ export default function Input({
     id,
     type,
     placeholder,
-    value,
+    defaultValue,
     maxLength,
     className,
     onChange,
@@ -31,12 +31,12 @@ export default function Input({
             maxLength={maxLength}
             type={type}
             placeholder={placeholder}
-            value={value}
+            defaultValue={defaultValue}
         ></input>
         <button 
             className="absolute right-5 top-1/2 -translate-y-1/2"
             type="submit"
-        ><Search className={`${value !== "" ? "fill-gray-900" : "fill-gray-300"}`}/></button>
+        ><Search className={`${defaultValue ? "fill-gray-900" : "fill-gray-300"}`}/></button>
     </div>
   )
 
