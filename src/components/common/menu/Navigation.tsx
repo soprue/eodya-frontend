@@ -4,7 +4,11 @@ import { ReactComponent as Edit } from "../../../assets/image/icon/edit.svg";
 import { ReactComponent as Person } from "../../../assets/image/icon/person.svg";
 
 // 하단 네비게이션바
-export default function Navigation() {
+export default function Navigation({
+  className,
+}: {
+  className?: React.ReactNode;
+}) {
   const navItem = [
     {
       component: Home,
@@ -24,7 +28,9 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="absolute bottom-0 flex h-[70px] w-full justify-between bg-white text-center text-[11px] font-semibold">
+    <nav
+      className={`absolute bottom-0 z-50 flex h-[70px] w-full justify-between bg-white text-center text-[11px] font-semibold ${className ? className : ""}`}
+    >
       {navItem.map((e, i) => (
         <Dl key={i} Component={e.component} path={e.path} name={e.name} />
       ))}
