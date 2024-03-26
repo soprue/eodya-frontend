@@ -1,11 +1,14 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 
 import Spinner from '../common/spinner/Spinner';
+import { login } from '../../store/features/auth/authSlice';
 
 function KakaoCallback() {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const params = new URL(document.location.toString()).searchParams;
@@ -37,6 +40,8 @@ function KakaoCallback() {
       })
       .then((res) => {
         console.log('사용자 정보', res);
+
+        dispatch(login({ username: 'User' }));
         navigate('/');
       })
       .catch((error) => {
