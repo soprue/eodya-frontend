@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import TopBar from "../../components/common/menu/TopBar";
-import SpotSearch from "../../components/new/spot/SpotSearch";
+import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/spot/SpotInfo";
 
 function NewSpotPage() {
@@ -27,7 +27,7 @@ function NewSpotPage() {
       </TopBar>
 
       <div>
-        {step === 1 && <SpotSearch onNext={handleSpotSearchChange} />}
+        {step === 1 && <SpotMap onNext={handleSpotSearchChange} />}
         {step === 2 && <SpotInfo onNext={handleSpotInfoChange} />}
         {step === 3 && <></>}
       </div>
