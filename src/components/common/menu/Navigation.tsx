@@ -13,7 +13,7 @@ export default function Navigation() {
     },
     {
       component: Edit,
-      path: "/new",
+      path: "/new/spot",
       name: "등록하기",
     },
     {
@@ -24,7 +24,7 @@ export default function Navigation() {
   ];
 
   return (
-    <nav className="absolute bottom-0 flex h-[70px] w-full justify-between bg-white text-center font-pretendard text-[11px] font-semibold">
+    <nav className="absolute bottom-0 flex h-[70px] w-full justify-between bg-white text-center text-[11px] font-semibold">
       {navItem.map((e, i) => (
         <Dl key={i} Component={e.component} path={e.path} name={e.name} />
       ))}

@@ -10,7 +10,7 @@ export default function TopBar({ children }: { children?: React.ReactNode }) {
   const navigate = useNavigate();
 
   return (
-    <div className="relative h-14 bg-white font-pretendard">
+    <div className="relative z-10 h-14 bg-white">
       <button
         type="button"
         className="absolute left-4 top-1/2 -translate-y-1/2"
