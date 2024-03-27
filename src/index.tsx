@@ -8,6 +8,7 @@ import { Provider } from 'react-redux';
 import { store } from './store/store';
 import { BrowserRouter } from 'react-router-dom';
 import Modal from 'react-modal';
+import { ModalsProvider } from './provider/ModalProvider';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -16,9 +17,11 @@ root.render(
   <React.StrictMode>
     <Provider store={store}>
       {/* router는 BrowserRouter로 일단 넣어놨는데 createBrowserRouter로 바꿔도 괜찮습니다. */}
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <ModalsProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ModalsProvider>
     </Provider>
   </React.StrictMode>
 );
