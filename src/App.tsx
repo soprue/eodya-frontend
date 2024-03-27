@@ -2,8 +2,6 @@ import { Suspense, lazy } from "react";
 import { Route, Routes } from "react-router-dom";
 import Main from "./page/main/Main";
 import Layout from "./components/layout/Layout";
-
-import { useAppSelector } from "./store/hooks";
 import Mypage from "./page/mypage/Mypage";
 
 const NewReviewPage = lazy(() => import("./page/new/Review"));

@@ -3,13 +3,13 @@ import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import { useCallback, useEffect, useState } from "react";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
-import { SpotView } from "../../components/main/SpotView";
+// import { SpotView } from "../../components/main/SpotView";
 import { LocationBtn } from "../../components/main/Btn/LocationBtn";
-import { ListLayout } from "../../components/main/ListLayout";
+// import { ListLayout } from "../../components/main/ListLayout";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
 
-import { TourList } from "../../components/main/TourList";
+// import { TourList } from "../../components/main/TourList";
 
 export default function Main() {
 
@@ -27,21 +27,19 @@ export default function Main() {
 
     if(!result) return;
 
-    const {center,error} = result;
+    const {center} = result;
     if(!center) return;
     setState({center,isPanto : true});
 
   },[]);
+  useEffect(()=>{ getPostion(); },[]);
 
-  useEffect(()=>{
-    getPostion();
-  },[]);
 
-  const [viewOpen,setViewOpen] = useState(false);
+/*   const [viewOpen,setViewOpen] = useState(false);
   const [smallOpen,setSmallOpen] = useState(false);
 
   const [tourHide,setTourHide] = useState(false);
-  const [tourOpen,setTourOpen] = useState(false);
+  const [tourOpen,setTourOpen] = useState(false); */
 
   return (
     <>
@@ -66,7 +64,7 @@ export default function Main() {
               },
               isPanto: false,
             });
-            setTourHide(true);
+            // setTourHide(true);
           }}
         >
           <MarkerClusterer
@@ -75,39 +73,40 @@ export default function Main() {
           >
             <BlossomMarker
               position={{ lat: 33.55635, lng: 126.795841 }}
-              onClick={()=>{
-                setSmallOpen(true);
+              onClick={(e)=>{
+                console.log(e);
+                // setSmallOpen(true);
+              }}
+            />
+            <BlossomMarker
+              position={{ lat: 33.55635, lng: 126.795841 }}
+              onClick={(e)=>{
+                console.log(e);
+                // setSmallOpen(true);
+              }}
+            />
+            <BlossomMarker
+              position={{ lat: 33.55635, lng: 126.795841 }}
+              onClick={(e)=>{
+                console.log(e);
+                // setSmallOpen(true);
               }}
             />
           </MarkerClusterer>
         </Map>
 
-        <div className={`absolute top-0 z-50 w-full translate-y-3/4`}>
+        <div className={`absolute bottom-[70px] z-50 w-full`}>
           <div className="absolute bottom-full left-5 mb-5">
             <LocationBtn onClick={getPostion}/>
           </div>
-          {
-            !tourHide && <TourList/>
-          }
+          {/* <TourList/> */}
+          {/* <ListLayout/> */}
         </div>
-
-
-        {/* {
-          smallOpen &&
-          <div className={`absolute bottom-[70px] z-50 w-full`}>
-            <div className="absolute bottom-full left-5 mb-5">
-              <LocationBtn onClick={getPostion}/>
-            </div>
-            <ListLayout onClick={()=>setViewOpen(!viewOpen)}/>
-          </div>
-        } */}
 
         <Navigation/>
 
       </main>
-      {
-        viewOpen && <SpotView/>
-      }
+      {/* <SpotView/> */}
     </>
   )
 }

@@ -34,8 +34,25 @@ export function TourList(){
 
           <div className="overflow-y-auto h-full scrollbar-hide">
             {
-              [0,1,2,3,4,5].map(e=>(
-                <ListLayout key={e}/>
+              [
+                {
+                  placeState : "만개",
+                  image : [0,1]
+                },
+                {
+                  placeState : "개화",
+                  image : [0]
+                },
+                {
+                  placeState : "내년에 만나요",
+                  image : [0,1]
+                },
+                {
+                  placeState : "개화",
+                  image : [0]
+                }
+              ].map((e,i)=>(
+                <ListLayout item={e} key={i}/>
               ))
             }
           </div>
@@ -56,9 +73,8 @@ export function TourList(){
               borderRadius : "10px",
               transform: 'translate(-50%, -50%)',
               width : `${280/360*100}%`,
-              height : `${280/360*100}%`,
+              height : 'auto',
               maxWidth : 280,
-              maxHeight : 280,
             },
             overlay : {
               zIndex : 9999,
@@ -67,13 +83,13 @@ export function TourList(){
           }}
         >
           <div className="pt-6 pb-5 font-pretendard tracking-custom leading-none h-full">
-            <h2 className="text-lg px-5 tracking-custom font-semibold">정렬기준</h2>
-            <ul className="border-b border-gray-100 mt-[10px]">
-              <li className="cursor-pointer p-4 px-5 font-bold text-primary flex justify-between items-center">랭킹순 <Check/></li>
-              <li className="cursor-pointer p-4 px-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">거리순 <Check/></li>
-              <li className="cursor-pointer p-4 px-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">후기순 <Check/></li>
+            <h2 className="text-lg px-5 tracking-custom font-semibold leading-[23.4px]">정렬기준</h2>
+            <ul className="border-b border-gray-100 mt-[10px] leading-4">
+              <li className="cursor-pointer p-5 font-bold text-primary flex justify-between items-center">랭킹순 <Check/></li>
+              <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">거리순 <Check/></li>
+              <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">후기순 <Check/></li>
             </ul>
-            <div className="text-right px-5 mt-4 text-gray-600">
+            <div className="text-right px-5 mt-4 text-gray-600 leading-[20.8px]">
               <button onClick={onClose}>취소</button>
             </div>
           </div>
