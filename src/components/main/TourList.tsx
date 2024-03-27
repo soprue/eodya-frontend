@@ -1,19 +1,12 @@
 import { useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 import { ListLayout } from "./ListLayout";
-import useModals from "../../hook/useModals";
 import RankModal from "./Modal/RankModal";
 
 
 // scrollbar-hide
 
 export function TourList(){
-
-  const {openModal} = useModals();
-
-  const orderClick = ()=>{
-    openModal(RankModal); // useModals의 openModal을 이용하여 Component를 넣어주면 해당 Modal창을 열어줍니다.
-  }
 
     return (
       <>
@@ -23,7 +16,6 @@ export function TourList(){
             <h2 className="text-xl tracking-[-0.02em] font-semibold">근처의 명소</h2>
             <button 
               className="flex items-center text-[13px] tracking-[-0.02em] font-medium"
-              onClick={orderClick}
             >
               랭킹순 <More className="fill-gray-800"/>
             </button>
