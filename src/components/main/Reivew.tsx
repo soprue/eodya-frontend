@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 
-export const Reivew = ({index} : {index : number})=>{
+export const Reivew = ({index,test} : {index : number, test : number[]})=>{
 
     const [click,setClick] = useState(false);
   
@@ -14,9 +14,9 @@ export const Reivew = ({index} : {index : number})=>{
           </div>
           <p className="text-gray-600 text-[13px] tracking-[-0.02em]">2024.04.18</p>
         </div>
-        <div className="grid grid-cols-2 gap-1 rounded-lg overflow-hidden mt-[11px]">
-          {[0,1].map((e)=>
-            <div key={e} className="w-full after:content-[''] after:pb-[100%] after:block relative">
+        <div className={`grid grid-cols-${test.length} gap-1 rounded-lg overflow-hidden mt-[11px]`}>
+          {test.map((e)=>
+            <div key={e} className={`w-full after:content-[''] ${test.length > 1 ? "after:pb-[100%]" : "after:pb-[calc(160/328*100%)]"} after:block relative`}>
               <img className="absolute top-0 left-0 w-full h-full object-cover object-center" src="https://picsum.photos/1280/720" alt="스팟 이미지" />
             </div>
           )}
