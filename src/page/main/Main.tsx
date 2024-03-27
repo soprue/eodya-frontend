@@ -82,24 +82,17 @@ export default function Main() {
           </MarkerClusterer>
         </Map>
 
-        {
-          tourHide && 
-          <div className="absolute bottom-[70px] left-5 mb-5 z-50">
-            <LocationBtn onClick={getPostion}/>
-          </div>
-        }
-
-        <div className={`absolute top-0 z-50 w-full ${!tourOpen ? "translate-y-[85%]" : "translate-y-[0]" }`}>
+        <div className={`absolute top-0 z-50 w-full translate-y-3/4`}>
           <div className="absolute bottom-full left-5 mb-5">
             <LocationBtn onClick={getPostion}/>
           </div>
           {
-            !tourHide && <TourList tourOpen={tourOpen} setTourOpen={setTourOpen}/>
+            !tourHide && <TourList/>
           }
         </div>
 
 
-        {
+        {/* {
           smallOpen &&
           <div className={`absolute bottom-[70px] z-50 w-full`}>
             <div className="absolute bottom-full left-5 mb-5">
@@ -107,7 +100,7 @@ export default function Main() {
             </div>
             <ListLayout onClick={()=>setViewOpen(!viewOpen)}/>
           </div>
-        }
+        } */}
 
         <Navigation/>
 
