@@ -8,7 +8,7 @@ function NewSpotPage() {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({});
 
-  const handleSpotSearchChange = (data: any) => {
+  const handleSpotMapChange = (data: any) => {
     console.log(1);
     // setFormValues((prevValues) => ({
     //   ...prevValues,
@@ -26,8 +26,8 @@ function NewSpotPage() {
         </div>
       </TopBar>
 
-      <div>
-        {step === 1 && <SpotMap onNext={handleSpotSearchChange} />}
+      <div className="h-[calc(100%-56px)] w-full">
+        {step === 1 && <SpotMap onNext={handleSpotMapChange} />}
         {step === 2 && <SpotInfo onNext={handleSpotInfoChange} />}
         {step === 3 && <></>}
       </div>

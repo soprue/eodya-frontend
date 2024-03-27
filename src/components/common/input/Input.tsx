@@ -35,6 +35,7 @@ export default function Input({
       <button
         className="absolute right-5 top-1/2 -translate-y-1/2"
         type="submit"
+        disabled={defaultValue === ""}
       >
         <Search
           className={`${defaultValue ? "fill-gray-900" : "fill-gray-300"}`}
