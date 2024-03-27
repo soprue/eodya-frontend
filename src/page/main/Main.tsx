@@ -12,7 +12,6 @@ import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
 import { TourList } from "../../components/main/TourList";
 
 export default function Main() {
-
   const [state, setState] = useState({
     // 지도의 초기 위치
     center: { lat: 33.450701, lng: 126.570667 },
@@ -20,101 +19,70 @@ export default function Main() {
     isPanto: false,
   });
 
-  // 포지션 가져오기
-  const getPostion = useCallback( async ()=>{
-
+  const getPostion = useCallback(async () => {
     const result = await getCurrentLocation();
 
-    if(!result) return;
+    if (!result) return;
 
-    const {center,error} = result;
-    if(!center) return;
-    setState({center,isPanto : true});
+    const { center, error } = result;
+    if (!center) return;
+    setState({ center, isPanto: true });
+  }, []);
 
-  },[]);
-
-  useEffect(()=>{
+  useEffect(() => {
     getPostion();
-  },[]);
+  }, []);
 
-  const [viewOpen,setViewOpen] = useState(false);
-  const [smallOpen,setSmallOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [smallOpen, setSmallOpen] = useState(false);
 
   const [tourHide,setTourHide] = useState(false);
   const [tourOpen,setTourOpen] = useState(false);
 
   return (
     <>
-      <main className="h-screen overflow-hidden relative">
-
-        <div className="absolute z-50 w-full top-[30px] px-4">
-          <Input type="text" placeholder="장소를 검색해 보세요"/>
-          <MainBookMarkBtn/>
+      <main className="h-screen">
+        <div className="absolute top-[30px] z-50 w-full px-4">
+          <Input type="text" placeholder="장소를 검색해 보세요" />
+          <MainBookMarkBtn />
         </div>
 
         <Map
           center={state.center}
           isPanto={state.isPanto}
-          style={{ width: "100%", height : "100%" }}
+          style={{ width: "100%", height: "100%" }}
           level={5}
-          onCenterChanged={(map)=>{
+          onCenterChanged={(map) => {
             const latlng = map.getCenter();
             setState({
-              center : {
-                lat : latlng.getLat(),
-                lng : latlng.getLng(),
+              center: {
+                lat: latlng.getLat(),
+                lng: latlng.getLng(),
               },
               isPanto: false,
             });
-            setTourHide(true);
           }}
         >
-          <MarkerClusterer
-            averageCenter={true}
-            minLevel={10}
-          >
+          <MarkerClusterer averageCenter={true} minLevel={10}>
             <BlossomMarker
               position={{ lat: 33.55635, lng: 126.795841 }}
-              onClick={()=>{
+              onClick={() => {
                 setSmallOpen(true);
               }}
             />
           </MarkerClusterer>
         </Map>
 
-        {
-          tourHide && 
-          <div className="absolute bottom-[70px] left-5 mb-5 z-50">
-            <LocationBtn onClick={getPostion}/>
+        <div className="absolute bottom-[70px] z-50 w-full">
+          <div className="mb-5 px-4">
+            <LocationBtn onClick={getPostion} />
           </div>
-        }
-
-        <div className={`absolute top-0 z-50 w-full ${!tourOpen ? "translate-y-[85%]" : "translate-y-[0]" }`}>
-          <div className="absolute bottom-full left-5 mb-5">
-            <LocationBtn onClick={getPostion}/>
-          </div>
-          {
-            !tourHide && <TourList tourOpen={tourOpen} setTourOpen={setTourOpen}/>
-          }
+          {smallOpen && <SpotSmall onClick={() => setViewOpen(!viewOpen)} />}
         </div>
 
-
-        {
-          smallOpen &&
-          <div className={`absolute bottom-[70px] z-50 w-full`}>
-            <div className="absolute bottom-full left-5 mb-5">
-              <LocationBtn onClick={getPostion}/>
-            </div>
-            <ListLayout onClick={()=>setViewOpen(!viewOpen)}/>
-          </div>
-        }
-
-        <Navigation/>
-
+        <Navigation />
       </main>
-      {
-        viewOpen && <SpotView/>
-      }
+      {viewOpen && <SpotView />}
     </>
-  )
+  );
 }

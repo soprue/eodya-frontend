@@ -7,37 +7,43 @@
   onDragEnd 는 드래그 끝날시 이벤르를 의미합니다.
 */
 
-import {MapMarker, MapMarkerProps} from "react-kakao-maps-sdk"
+import { MapMarker, MapMarkerProps } from "react-kakao-maps-sdk";
 import basic from "../../../assets/image/marker/basic.png";
 
 const SIZE = {
-  width : 34,
-  height : 48.6
-}
+  width: 34,
+  height: 48.6,
+};
 
-export default function BasicMarker({position,draggable,clickable,onClick,onDragStart,onDragEnd} : MapMarkerProps) {
+export default function BasicMarker({
+  position,
+  draggable,
+  clickable,
+  onClick,
+  onDragStart,
+  onDragEnd,
+}: MapMarkerProps) {
   return (
     <MapMarker
       position={position}
       image={{
-        src : basic,
-        size : {
-          width : SIZE.width,
-          height : SIZE.height
+        src: basic,
+        size: {
+          width: SIZE.width,
+          height: SIZE.height,
         },
         options: {
           offset: {
             x: SIZE.width,
             y: SIZE.height,
           }, // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-        }
+        },
       }}
       draggable={draggable}
       clickable={clickable}
       onDragStart={onDragStart}
       onDragEnd={onDragEnd}
       onClick={onClick}
-    >
-    </MapMarker>
-  )
+    ></MapMarker>
+  );
 }
