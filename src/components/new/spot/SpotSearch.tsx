@@ -66,7 +66,7 @@ function SpotSearch({ isOpen, setIsOpen, setValues }: SpotSearchProps) {
         // console.log(_pagination);
         if (status === kakao.maps.services.Status.OK) {
           setTimeout(() => {
-            console.log(page, options, data);
+            // console.log(page, options, data);
             setSearchResults((prevResults) => [...prevResults, ...data]);
             setIsLoading(false);
             setHasMore(_pagination.hasNextPage);

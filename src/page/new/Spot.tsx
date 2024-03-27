@@ -3,12 +3,18 @@ import { useState } from "react";
 import TopBar from "../../components/common/menu/TopBar";
 import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/spot/SpotInfo";
-import SpotSearch from "../../components/new/spot/SpotSearch";
 import { useNavigate } from "react-router-dom";
+
+const LAST_STEP = 3;
 
 function NewSpotPage() {
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState({});
+  const [formValues, setFormValues] = useState({
+    name: "",
+    address: "",
+    lat: 33.450701,
+    lng: 126.570667,
+  });
   const navigate = useNavigate();
 
   const handleBackClick = () => {
@@ -20,11 +26,13 @@ function NewSpotPage() {
   };
 
   const handleSpotMapChange = (data: any) => {
-    console.log(1);
-    // setFormValues((prevValues) => ({
-    //   ...prevValues,
-    //   data,
-    // }));
+    const { isPanto, ...restData } = data;
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      ...restData,
+    }));
+
+    setStep((prev) => prev + 1);
   };
 
   const handleSpotInfoChange = (data: any) => {};
@@ -33,7 +41,7 @@ function NewSpotPage() {
     <main className="h-dvh w-full">
       <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
         <div className="flex h-full items-center justify-center font-medium">
-          스팟 등록
+          새로운 스팟 등록
         </div>
       </TopBar>
 
@@ -41,8 +49,13 @@ function NewSpotPage() {
         {step === 1 && (
           <SpotMap onNext={handleSpotMapChange} setStep={setStep} />
         )}
-        {/* {step === 2 && <SpotSearch setStep={setStep} />} */}
-        {step === 2 && <SpotInfo onNext={handleSpotInfoChange} />}
+        {step === 2 && (
+          <SpotInfo
+            onNext={handleSpotInfoChange}
+            name={formValues.name}
+            address={formValues.address}
+          />
+        )}
         {step === 3 && <></>}
       </div>
     </main>

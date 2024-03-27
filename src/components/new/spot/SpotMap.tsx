@@ -121,7 +121,7 @@ function SpotMap({ onNext, setStep }: SpotMapProps) {
             <Edit className="fill-gray-950" />
           </div>
 
-          <Btn onClick={onNext}>이 위치 등록하기</Btn>
+          <Btn onClick={() => onNext(values)}>이 위치 등록하기</Btn>
         </div>
       </div>
 
