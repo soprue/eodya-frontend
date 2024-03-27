@@ -26,10 +26,12 @@ function SpotSearch({ isOpen, setIsOpen, setValues }: SpotSearchProps) {
 
   const handleSelectSpot = (e: React.MouseEvent<HTMLLIElement>) => {
     const target = e.target as HTMLElement;
-    const lat = target.dataset.lat;
-    const lng = target.dataset.lng;
-    const name = target.dataset.name;
-    const address = target.dataset.address;
+    const liElement = target.closest("li") as HTMLElement;
+
+    const lat = liElement.dataset.lat;
+    const lng = liElement.dataset.lng;
+    const name = liElement.dataset.name;
+    const address = liElement.dataset.address;
 
     setValues((prevValues: any) => ({
       ...prevValues,
