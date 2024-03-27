@@ -12,7 +12,7 @@ export function TourList(){
   const {openModal} = useModals();
 
   const orderClick = ()=>{
-    openModal(RankModal,{});
+    openModal(RankModal); // useModals의 openModal을 이용하여 Component를 넣어주면 해당 Modal창을 열어줍니다.
   }
 
     return (

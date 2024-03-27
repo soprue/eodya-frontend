@@ -21,8 +21,9 @@ const modalSlice = createSlice({
             ];
 
         },
-        close : (state,action)=>{
-            const {Component} = action.payload
+        close : (state,action : PayloadAction<any>)=>{
+            const {Component} = action.payload;
+            console.log(Component);
             return state.filter(item=>item.Component !== Component); // 컴포넌트가 동일하지 않으면 삭제
         }
     }
