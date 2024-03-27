@@ -9,6 +9,7 @@ export default function Btn({
   className,
   type,
   children,
+  disabled,
   onClick,
 }: ButtonProps) {
   return (
@@ -21,6 +22,7 @@ export default function Btn({
         ${className ? className : ""}
       `}
       onClick={onClick}
+      disabled={disabled}
     >
       {children}
     </button>

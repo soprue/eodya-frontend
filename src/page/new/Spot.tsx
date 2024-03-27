@@ -14,6 +14,9 @@ function NewSpotPage() {
     address: "",
     lat: 33.450701,
     lng: 126.570667,
+    comment: "",
+    images: [],
+    status: "",
   });
   const navigate = useNavigate();
 
@@ -35,7 +38,14 @@ function NewSpotPage() {
     setStep((prev) => prev + 1);
   };
 
-  const handleSpotInfoChange = (data: any) => {};
+  const handleSpotInfoChange = (data: any) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      ...data,
+    }));
+
+    setStep((prev) => prev + 1);
+  };
 
   return (
     <main className="h-dvh w-full">

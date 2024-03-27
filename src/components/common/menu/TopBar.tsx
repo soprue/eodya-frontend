@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom";
 
 import prev from "../../../assets/image/icon/prev.svg";
-import close from "../../../assets/image/icon/close.svg";
+import { ReactComponent as Close } from "../../../assets/image/icon/close.svg";
 
 /* 
   기본적으로 prev 버튼을 생성하고
@@ -42,7 +42,7 @@ export default function TopBar({
           className="absolute right-4 top-1/2 -translate-y-1/2"
           onClick={() => navigate(-1)}
         >
-          <img src={close} alt="이전 페이지" />
+          <Close className="fill-[#424242]" />
         </button>
       )}
     </div>
