@@ -31,7 +31,7 @@ function NewSpotPage() {
 
   return (
     <main className="h-dvh w-full">
-      <TopBar canClose={step >= 3 && true} onBack={handleBackClick}>
+      <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
         <div className="flex h-full items-center justify-center font-medium">
           스팟 등록
         </div>
@@ -41,9 +41,9 @@ function NewSpotPage() {
         {step === 1 && (
           <SpotMap onNext={handleSpotMapChange} setStep={setStep} />
         )}
-        {step === 2 && <SpotSearch />}
-        {step === 3 && <SpotInfo onNext={handleSpotInfoChange} />}
-        {step === 4 && <></>}
+        {/* {step === 2 && <SpotSearch setStep={setStep} />} */}
+        {step === 2 && <SpotInfo onNext={handleSpotInfoChange} />}
+        {step === 3 && <></>}
       </div>
     </main>
   );

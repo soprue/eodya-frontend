@@ -14,6 +14,7 @@ import BasicMarker from "../../common/marker/BasicMarker";
 import { getCurrentLocation } from "../../../utils/mapLocation/getCurrentLocation";
 import { LocationBtn } from "../../main/Btn/LocationBtn";
 import fetchAddressAndName from "../../../utils/mapLocation/fetchAddressAndName";
+import SpotSearch from "./SpotSearch";
 
 interface SpotMapProps {
   onNext: (data: any) => void;
@@ -110,7 +111,7 @@ function SpotMap({ onNext, setStep }: SpotMapProps) {
 
           <div
             className={`flex h-[46px] w-full cursor-pointer items-center justify-between overflow-hidden rounded-[10px] bg-gray-100 px-5`}
-            onClick={() => setStep(2)}
+            onClick={() => setIsOpen(true)}
           >
             <input
               className="h-full w-[calc(100%-50px)] min-w-0 cursor-pointer bg-transparent text-base font-semibold leading-4 tracking-[-0.02em] outline-none placeholder:text-gray-300"
@@ -123,6 +124,8 @@ function SpotMap({ onNext, setStep }: SpotMapProps) {
           <Btn onClick={onNext}>이 위치 등록하기</Btn>
         </div>
       </div>
+
+      <SpotSearch isOpen={isOpen} setIsOpen={setIsOpen} setValues={setValues} />
     </div>
   );
 }
