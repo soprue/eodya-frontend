@@ -5,8 +5,6 @@ import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/spot/SpotInfo";
 import { useNavigate } from "react-router-dom";
 
-const LAST_STEP = 3;
-
 function NewSpotPage() {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({
@@ -57,7 +55,7 @@ function NewSpotPage() {
 
       <div className="h-[calc(100%-56px)] w-full">
         {step === 1 && (
-          <SpotMap onNext={handleSpotMapChange} setStep={setStep} />
+          <SpotMap onNext={handleSpotMapChange} formValues={formValues} />
         )}
         {step === 2 && (
           <SpotInfo

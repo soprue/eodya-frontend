@@ -8,28 +8,27 @@ import {
 import { Map } from "react-kakao-maps-sdk";
 import { debounce } from "lodash";
 
+import { getCurrentLocation } from "../../../utils/mapLocation/getCurrentLocation";
+import fetchAddressAndName from "../../../utils/mapLocation/fetchAddressAndName";
 import { ReactComponent as Edit } from "../../../assets/image/icon/edit.svg";
 import Btn from "../../common/btn/Btn";
 import BasicMarker from "../../common/marker/BasicMarker";
-import { getCurrentLocation } from "../../../utils/mapLocation/getCurrentLocation";
 import { LocationBtn } from "../../main/Btn/LocationBtn";
-import fetchAddressAndName from "../../../utils/mapLocation/fetchAddressAndName";
 import SpotSearch from "./SpotSearch";
 
 interface SpotMapProps {
   onNext: (data: any) => void;
-  setStep: Dispatch<SetStateAction<any>>;
+  formValues: any;
 }
 
-function SpotMap({ onNext, setStep }: SpotMapProps) {
+function SpotMap({ onNext, formValues }: SpotMapProps) {
   const [values, setValues] = useState({
-    name: "",
-    address: "",
-    lat: 33.450701,
-    lng: 126.570667,
+    name: formValues.name,
+    address: formValues.address,
+    lat: formValues.lat,
+    lng: formValues.lng,
     isPanto: false,
   });
-
   const [isOpen, setIsOpen] = useState<boolean>(false);
 
   const getPostion = useCallback(async () => {
@@ -52,8 +51,17 @@ function SpotMap({ onNext, setStep }: SpotMapProps) {
   }, []);
 
   useEffect(() => {
-    getPostion();
-  }, []);
+    if (formValues.lat !== 33.450701 || formValues.lng !== 126.570667) {
+      setValues((prevValues) => ({
+        ...prevValues,
+        lat: formValues.lat,
+        lng: formValues.lng,
+        isPanto: true,
+      }));
+    } else {
+      getPostion();
+    }
+  }, [formValues.lat, formValues.lng]);
 
   // 마지막 위치에 대한 주소와 이름 정보를 조회하고 상태를 업데이트하는 함수
   const updateAddressAndName = async (lat: number, lng: number) => {
