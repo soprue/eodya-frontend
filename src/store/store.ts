@@ -4,7 +4,7 @@ import { slice } from "./features/test/state";
 export const store = configureStore({
     reducer : {
         // reduer를 생성하면 넣어주세요
-        test : slice.reducer
+        test : slice.reducer,
     }
 });
 
