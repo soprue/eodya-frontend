@@ -4,6 +4,7 @@ import Main from "./page/main/Main";
 import Layout from "./components/layout/Layout";
 
 import { useAppSelector } from "./store/hooks";
+import Mypage from "./page/mypage/Mypage";
 
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
@@ -41,6 +42,7 @@ function App() {
           <Route path="/" element={<Main />} />
           <Route path="/new/review" element={<NewReviewPage />} />
           <Route path="/new/spot" element={<NewSpotPage />} />
+          <Route path="/mypage" element={<Mypage />} />
         </Route>
       </Routes>
     </Suspense>
