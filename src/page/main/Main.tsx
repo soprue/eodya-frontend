@@ -9,7 +9,7 @@ import { LocationBtn } from "../../components/main/Btn/LocationBtn";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
 
-// import { TourList } from "../../components/main/TourList";
+import { TourList } from "../../components/main/TourList";
 
 export default function Main() {
 
@@ -99,7 +99,7 @@ export default function Main() {
           <div className="absolute bottom-full left-5 mb-5">
             <LocationBtn onClick={getPostion}/>
           </div>
-          {/* <TourList/> */}
+          <TourList/>
           {/* <ListLayout/> */}
         </div>
 

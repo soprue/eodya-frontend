@@ -1,21 +1,18 @@
 import { useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 import { ListLayout } from "./ListLayout";
-import { ReactComponent as Check } from "../../assets/image/icon/check.svg"
-import Modal from "react-modal";
+import useModals from "../../hook/useModals";
+import RankModal from "./Modal/RankModal";
+
 
 // scrollbar-hide
 
 export function TourList(){
 
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const {openModal} = useModals();
 
-  const onClick = ()=>{
-    setIsOpen(true);
-  }
-
-  const onClose = ()=>{
-    setIsOpen(false);
+  const orderClick = ()=>{
+    openModal(RankModal,{});
   }
 
     return (
@@ -26,7 +23,7 @@ export function TourList(){
             <h2 className="text-xl tracking-[-0.02em] font-semibold">근처의 명소</h2>
             <button 
               className="flex items-center text-[13px] tracking-[-0.02em] font-medium"
-              onClick={onClick}
+              onClick={orderClick}
             >
               랭킹순 <More className="fill-gray-800"/>
             </button>
@@ -58,42 +55,7 @@ export function TourList(){
           </div>
 
         </div>
-        <Modal
-          isOpen={modalIsOpen}
-          style={{
-            content : {
-              position : "absolute",
-              overflow : "hidden",
-              left : "50%",
-              top : "50%",
-              right: 'auto',
-              bottom: 'auto',
-              padding : 0,
-              marginRight: '-50%',
-              borderRadius : "10px",
-              transform: 'translate(-50%, -50%)',
-              width : `${280/360*100}%`,
-              height : 'auto',
-              maxWidth : 280,
-            },
-            overlay : {
-              zIndex : 9999,
-              background : "rgba(000,000,000,0.5)"
-            }
-          }}
-        >
-          <div className="pt-6 pb-5 font-pretendard tracking-custom leading-none h-full">
-            <h2 className="text-lg px-5 tracking-custom font-semibold leading-[23.4px]">정렬기준</h2>
-            <ul className="border-b border-gray-100 mt-[10px] leading-4">
-              <li className="cursor-pointer p-5 font-bold text-primary flex justify-between items-center">랭킹순 <Check/></li>
-              <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">거리순 <Check/></li>
-              <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">후기순 <Check/></li>
-            </ul>
-            <div className="text-right px-5 mt-4 text-gray-600 leading-[20.8px]">
-              <button onClick={onClose}>취소</button>
-            </div>
-          </div>
-        </Modal>
+        
       </>
     )
 }
