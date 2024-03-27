@@ -1,20 +1,26 @@
-import { useCallback, useEffect, useState } from "react";
+import {
+  Dispatch,
+  SetStateAction,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { Map } from "react-kakao-maps-sdk";
 import { debounce } from "lodash";
 
 import { ReactComponent as Edit } from "../../../assets/image/icon/edit.svg";
 import Btn from "../../common/btn/Btn";
 import BasicMarker from "../../common/marker/BasicMarker";
-import SpotSearch from "./SpotSearch";
 import { getCurrentLocation } from "../../../utils/mapLocation/getCurrentLocation";
 import { LocationBtn } from "../../main/Btn/LocationBtn";
 import fetchAddressAndName from "../../../utils/mapLocation/fetchAddressAndName";
 
 interface SpotMapProps {
   onNext: (data: any) => void;
+  setStep: Dispatch<SetStateAction<any>>;
 }
 
-function SpotMap({ onNext }: SpotMapProps) {
+function SpotMap({ onNext, setStep }: SpotMapProps) {
   const [values, setValues] = useState({
     name: "",
     address: "",
@@ -47,10 +53,6 @@ function SpotMap({ onNext }: SpotMapProps) {
   useEffect(() => {
     getPostion();
   }, []);
-
-  const handleSearchClick = () => {
-    setIsOpen(true);
-  };
 
   // 마지막 위치에 대한 주소와 이름 정보를 조회하고 상태를 업데이트하는 함수
   const updateAddressAndName = async (lat: number, lng: number) => {
@@ -96,7 +98,7 @@ function SpotMap({ onNext }: SpotMapProps) {
             <BasicMarker position={{ lat: values.lat, lng: values.lng }} />
           </Map>
 
-          <div className="absolute bottom-[200px] z-50 w-full">
+          <div className="absolute bottom-[200px] z-10 w-full">
             <div className="mb-5 px-4">
               <LocationBtn onClick={getPostion} />
             </div>
@@ -108,7 +110,7 @@ function SpotMap({ onNext }: SpotMapProps) {
 
           <div
             className={`flex h-[46px] w-full cursor-pointer items-center justify-between overflow-hidden rounded-[10px] bg-gray-100 px-5`}
-            onClick={handleSearchClick}
+            onClick={() => setStep(2)}
           >
             <input
               className="h-full w-[calc(100%-50px)] min-w-0 cursor-pointer bg-transparent text-base font-semibold leading-4 tracking-[-0.02em] outline-none placeholder:text-gray-300"
@@ -121,8 +123,6 @@ function SpotMap({ onNext }: SpotMapProps) {
           <Btn onClick={onNext}>이 위치 등록하기</Btn>
         </div>
       </div>
-
-      <SpotSearch isOpen={isOpen} setIsOpen={setIsOpen} />
     </div>
   );
 }

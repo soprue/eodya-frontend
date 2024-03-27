@@ -2,12 +2,9 @@ import { Dispatch, SetStateAction, useState } from "react";
 
 import Input from "../../common/input/Input";
 
-interface SpotSearchProps {
-  isOpen: boolean;
-  setIsOpen: Dispatch<SetStateAction<any>>;
-}
+interface SpotSearchProps {}
 
-function SpotSearch({ isOpen, setIsOpen }: SpotSearchProps) {
+function SpotSearch() {
   const [inputValue, setInputValue] = useState("");
   const [page, setPage] = useState<number>(1);
   const [searchResults, setSearchResults] =
@@ -45,8 +42,7 @@ function SpotSearch({ isOpen, setIsOpen }: SpotSearchProps) {
 
   return (
     <div
-      className={`absolute top-[56px] z-20 h-[calc(100%-56px)] w-full bg-white p-4 transition-all duration-300 ${isOpen ? "left-0" : "left-full"}`}
-      onClick={() => setIsOpen(false)}
+      className={`absolute top-[56px] z-20 h-[calc(100%-56px)] w-full bg-white p-4`}
     >
       <form onSubmit={handleSearchSubmit} onClick={handleStopPropagation}>
         <Input
@@ -58,7 +54,7 @@ function SpotSearch({ isOpen, setIsOpen }: SpotSearchProps) {
       </form>
 
       <ul
-        className="scrollbar-hide mt-4 h-[calc(100%-62px)] overflow-y-auto"
+        className="mt-4 h-[calc(100%-62px)] overflow-y-auto scrollbar-hide"
         onClick={handleStopPropagation}
       >
         {searchResults == null ? (
