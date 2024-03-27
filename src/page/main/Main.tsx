@@ -5,9 +5,11 @@ import { useCallback, useEffect, useState } from "react";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
 import { SpotView } from "../../components/main/SpotView";
 import { LocationBtn } from "../../components/main/Btn/LocationBtn";
-import { SpotSmall } from "../../components/main/SpotSmall";
+import { ListLayout } from "../../components/main/ListLayout";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
+import { ReactComponent as More} from "../../assets/image/icon/more.svg";
+import TopBar from "../../components/common/menu/TopBar";
 
 export default function Main() {
 
@@ -18,6 +20,7 @@ export default function Main() {
     isPanto: false,
   });
 
+  // 포지션 가져오기
   const getPostion = useCallback( async ()=>{
 
     const result = await getCurrentLocation();
@@ -36,10 +39,11 @@ export default function Main() {
 
   const [viewOpen,setViewOpen] = useState(false);
   const [smallOpen,setSmallOpen] = useState(false);
+  const [tourOpen,setTourOpen] = useState(false);
 
   return (
     <>
-      <main className="h-screen">
+      <main className="h-screen overflow-hidden relative">
 
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
@@ -75,13 +79,14 @@ export default function Main() {
           </MarkerClusterer>
         </Map>
 
-        <div className="absolute bottom-[70px] z-50 w-full">
-          <div className="px-4 mb-5">
+        <div className={`absolute top-0 z-50 w-full ${!tourOpen ? "translate-y-[85%]" : "translate-y-[0]" }`}>
+          <div className="absolute bottom-full left-5 mb-5">
             <LocationBtn onClick={getPostion}/>
           </div>
           {
-            smallOpen &&  <SpotSmall onClick={()=>setViewOpen(!viewOpen)}/>
+            smallOpen &&  <ListLayout onClick={()=>setViewOpen(!viewOpen)}/>
           }
+          <TourList tourOpen={tourOpen} setTourOpen={setTourOpen}/>
         </div>
 
         <Navigation/>
@@ -91,5 +96,23 @@ export default function Main() {
         viewOpen && <SpotView/>
       }
     </>
+  )
+}
+
+
+function TourList({tourOpen,setTourOpen} : {tourOpen : boolean,setTourOpen:React.Dispatch<React.SetStateAction<boolean>>}){
+  return (
+    <div onClick={()=>setTourOpen(true)} className={`bg-white pt-7 font-pretendard h-[calc(100vh-70px)] ${tourOpen ? "overflow-y-auto" : ""}`}>
+      {/* <TopBar/> */}
+      <div className="flex justify-between items-center px-4">
+        <h2 className="text-xl tracking-[-0.02em] font-semibold">근처의 명소</h2>
+        <p className="flex items-center text-[13px] tracking-[-0.02em] font-medium">정렬 <More className="fill-gray-800"/></p>
+      </div>
+      {
+        [0,1,2,3,4,5].map(e=>(
+          <ListLayout key={e}/>
+        ))
+      }
+    </div>
   )
 }

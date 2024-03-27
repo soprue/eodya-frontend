@@ -1,7 +1,7 @@
 import { BookMarkBtn } from "./Btn/BookMarkBtn"
 
 // 스팟선택
-export const SpotSmall = ({onClick} : {onClick : React.MouseEventHandler<HTMLDivElement>}) => {
+export const ListLayout = ({onClick} : {onClick? : React.MouseEventHandler<HTMLDivElement>}) => {
 
     return (
       <div className="bg-white p-4 font-pretendard" onClick={onClick}>

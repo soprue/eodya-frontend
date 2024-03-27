@@ -1,5 +1,5 @@
 import { useState } from "react";
-import more from "../../assets/image/icon/more.svg";
+import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 
 export const Reivew = ({index} : {index : number})=>{
 
@@ -30,7 +30,7 @@ export const Reivew = ({index} : {index : number})=>{
             type="button"
             onClick={()=>setClick(!click)}
             className="flex items-center ml-auto mt-[15px] text-[13px] tracking-[-0.02em] text-gray-300"
-          >더보기 <img src={more} alt="더보기 버튼" /></button>
+          >더보기 <More className="fill-gray-300"/> </button>
         }
       </div>
     )
