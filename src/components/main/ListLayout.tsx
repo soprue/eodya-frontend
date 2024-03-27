@@ -1,4 +1,4 @@
-import { BookMarkBtn } from "./Btn/BookMarkBtn"
+import { BookMarkBtn } from "../common/btn/BookMarkBtn"
 
 // 스팟선택
 export const ListLayout = ({onClick} : {onClick? : React.MouseEventHandler<HTMLDivElement>}) => {
