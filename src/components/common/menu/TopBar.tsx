@@ -1,4 +1,4 @@
-import prev from "../../../assets/image/icon/prev.svg";
+import {ReactComponent as Prev} from "../../../assets/image/icon/prev.svg";
 
 /* 
   기본적으로 prev 버튼을 생성하고
@@ -9,18 +9,20 @@ import prev from "../../../assets/image/icon/prev.svg";
 
 export default function TopBar({
   className,
+  prevClassName,
   children,
   onClick,
   hide
 }: {
   className?: React.ReactNode,
+  prevClassName?: React.ReactNode,
   children?: React.ReactNode,
   onClick?: React.MouseEventHandler<HTMLButtonElement>,
   hide? : boolean
 }) {
   return (
     <div
-      className={`relative z-10 h-14 bg-white ${className ? className : ""}`}
+      className={`relative z-10 h-14 ${className ? className : ""}`}
     >
       {
         !hide ?
@@ -29,7 +31,7 @@ export default function TopBar({
           className="absolute left-4 top-1/2 -translate-y-1/2"
           onClick={onClick}
         >
-          <img src={prev} alt="이전 페이지" />
+          <Prev fill="#424242" className={`${prevClassName}`}/>
         </button>
         : null
       }
