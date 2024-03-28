@@ -1,4 +1,4 @@
-import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
+import { Map, MapMarker, MarkerClusterer } from "react-kakao-maps-sdk";
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import { useCallback, useEffect, useState } from "react";
@@ -11,6 +11,7 @@ import { TourList } from "../../components/main/TourList";
 import { ListLayout } from "../../components/main/ListLayout";
 import { useAppDispatch } from "../../store/hooks";
 import { open } from "../../store/features/spotView/slice";
+import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 
 export default function Main() {
 
@@ -34,6 +35,15 @@ export default function Main() {
 
   },[]);
   useEffect(()=>{ getPostion(); },[]);
+
+  // 현재위치 계속 가져오기
+  const {location,error} = useWatchLocation();
+
+  useEffect(()=>{
+
+    console.log(location,error);
+
+  },[location]);
 
   return (
     <>
@@ -65,6 +75,17 @@ export default function Main() {
             averageCenter={true}
             minLevel={10}
           >
+            
+            {/* 나 */}
+            {
+              location &&
+              <MapMarker
+                position={{lat : location.latitude, lng : location.longitude}}
+              />
+            }
+            
+
+            {/* 벚꽃 */}
             <BlossomMarker
               position={{ lat: 33.55635, lng: 126.795841 }}
               onClick={(e)=>{
