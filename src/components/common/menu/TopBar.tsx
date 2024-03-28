@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router-dom";
 import {ReactComponent as Prev} from "../../../assets/image/icon/prev.svg";
 
 /* 
@@ -20,6 +21,21 @@ export default function TopBar({
   onClick?: React.MouseEventHandler<HTMLButtonElement>,
   hide? : boolean
 }) {
+
+  const navigate = useNavigate();
+
+  const onPrev = ()=>{
+    navigate(-1);
+  }
+
+  const handleClick : React.MouseEventHandler<HTMLButtonElement> = (e)=>{
+    if(onClick){
+      onClick(e);
+    } else {
+      onPrev();
+    }
+  }
+
   return (
     <div
       className={`relative z-10 h-14 ${className ? className : ""}`}
@@ -29,7 +45,7 @@ export default function TopBar({
         <button
           type="button"
           className="absolute left-4 top-1/2 -translate-y-1/2"
-          onClick={onClick}
+          onClick={handleClick}
         >
           <Prev fill="#424242" className={`${prevClassName}`}/>
         </button>

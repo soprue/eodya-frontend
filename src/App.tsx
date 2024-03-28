@@ -3,6 +3,11 @@ import { Route, Routes } from "react-router-dom";
 import Main from "./page/main/Main";
 import Layout from "./components/layout/Layout";
 import Mypage from "./page/mypage/Mypage";
+import ShareBtn from "./components/common/btn/Share/ShareBtn";
+import TopBar from "./components/common/menu/TopBar";
+import { BookMarkBtn } from "./components/common/btn/BookMarkBtn";
+import BookMarker from "./components/common/marker/BookMarker";
+import { MainBookMarkBtn } from "./components/main/Btn/MainBookMarkBtn";
 
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
