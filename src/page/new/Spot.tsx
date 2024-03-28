@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import TopBar from "../../components/common/menu/TopBar";
 import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/spot/SpotInfo";
-import { useNavigate } from "react-router-dom";
+import SpotStatus from "../../components/new/spot/SpotStatus";
+import SpotDone from "../../components/new/spot/SpotDone";
 
 function NewSpotPage() {
   const [step, setStep] = useState(1);
@@ -12,7 +14,7 @@ function NewSpotPage() {
     address: "",
     lat: 33.450701,
     lng: 126.570667,
-    comment: "",
+    comments: "",
     images: [],
     status: "",
   });
@@ -45,6 +47,20 @@ function NewSpotPage() {
     setStep((prev) => prev + 1);
   };
 
+  const handleSpotStatusChange = (data: any) => {
+    setFormValues((prevValues) => ({
+      ...prevValues,
+      status: data,
+    }));
+
+    setStep((prev) => prev + 1);
+  };
+
+  const handleUpload = () => {
+    // TODO: 마이 페이지 제보 화면으로 이동
+    console.log(formValues);
+  };
+
   return (
     <main className="h-dvh w-full">
       <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
@@ -64,7 +80,20 @@ function NewSpotPage() {
             address={formValues.address}
           />
         )}
-        {step === 3 && <></>}
+        {step === 3 && (
+          <SpotStatus
+            onNext={handleSpotStatusChange}
+            name={formValues.name}
+            address={formValues.address}
+          />
+        )}
+        {step === 4 && (
+          <SpotDone
+            onNext={handleUpload}
+            name={formValues.name}
+            address={formValues.address}
+          />
+        )}
       </div>
     </main>
   );
