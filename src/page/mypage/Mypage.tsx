@@ -5,7 +5,9 @@ import { ReactComponent as SettingSVG} from "../../assets/image/icon/setting.svg
 import { useState } from 'react';
 import { GridLayout } from '../../components/mypage/GridLayout';
 import { Image } from '../../components/mypage/Image';
-import { Info } from '../../components/mypage/Info';
+import { ReactComponent as Vintage} from "../../assets/image/icon/vintage.svg";
+import { BookMarkBtn } from '../../components/common/btn/BookMarkBtn';
+import FlowerTag from '../../components/common/tag/FlowerTag';
 
 export default function Mypage() {
 
@@ -21,12 +23,16 @@ export default function Mypage() {
       <div className='h-[calc(100vh-70px)] flex-col flex'>
 
         <div className='flex-none'>
-          <TopBar>
+          <TopBar
+            hide={true}
+          >
             <SettingSVG className="fill-gray-800 absolute top-1/2 right-4 -translate-y-1/2 cursor-pointer"/>
           </TopBar>
 
-          <div className="flex items-center font-pretendard tracking-custom leading-none">
-            <div className="w-[68px] h-[68px] bg-[#EBEBEB] rounded-full" ></div> 
+          <div className="flex items-center font-pretendard tracking-custom leading-none px-6">
+            <div className="w-[68px] h-[68px] bg-[#EBEBEB] rounded-full relative"> 
+              <Vintage  className='absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2'/>
+            </div> 
             <div className='ml-4'>
               <p className='text-lg font-semibold'>어댜4885</p>
               <p className='text-gray-300 text-[13px] mt-[3px] border-b border-gray-300'><Link to={'/'}>계정 정보 수정</Link></p>
@@ -40,17 +46,27 @@ export default function Mypage() {
           </div>
         </div>
 
-        <div className="overflow-y-auto h-full">
+        <div className="overflow-y-auto h-full scrollbar-hide">
           
           {
             step === 0 &&
             Array.from({length : 100}).map((e,i)=>(
               <GridLayout index={i} key={i}>
-                <div className='flex'>
-                  <Image/>
-                  <Info/>
+                <div className='flex relative pr-6'>
+                  <div className='w-[100px] relative flex-none'>
+                    <div className='absolute top-0 left-0 z-10 leading-none mt-[10px] ml-[10px]'>
+                      <FlowerTag placeState='개화'/>
+                    </div>
+                    <Image/>
+                  </div>
+                  <dl className='ml-3 tracking-custom'>
+                    <dt className='text-base text-gray-950 font-bold leading-4'>애기능 동산</dt>
+                    <dd className='text-sm font-normal mt-[6px] leading-[21px] text-gray-700'>서울 성북구 안암로 73-15</dd>
+                  </dl>
+                  <div className="absolute right-0 top-0">
+                    <BookMarkBtn/>
+                  </div>
                 </div>
-                {/* 북마크 공통 컴포넌트로 수정 */}
               </GridLayout>
             ))
           }
@@ -59,7 +75,45 @@ export default function Mypage() {
             step === 1 &&
             Array.from({length : 100}).map((e,i)=>(
               <GridLayout index={i} key={i}>
-                <Info/>
+                <div className='tracking-custom'>
+                  <dl>
+                    <dt className="text-base font-bold leading-4 text-gray-950">애기능 동산</dt>
+                    <dd className='text-sm leading-[21px] font-normal mt-[6px] text-gray-500'>서울 성북구 안암로 73-15</dd>
+                  </dl>
+                  <p className='text-sm leading-[21px] font-normal text-gray-900 mt-[6px]'>
+                    대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
+                    새로운 회계연도가 개시될 때까지 예산안이 의결
+                  </p>
+                </div>
+              </GridLayout>
+            ))
+          }
+
+          {
+            step === 2 &&
+            Array.from({length : 100}).map((e,i)=>(
+              <GridLayout index={i} key={i}>
+                <p className='text-gray-300 text-[13px] tracking-custom leading-none '>2024.04.18</p>
+                <div className='flex relative mt-2'>
+                  <div className='w-[80px] relative flex-none'>
+                    <div className='absolute top-0 left-0 z-10 leading-none mt-[10px] ml-[10px]'>
+                      <FlowerTag placeState='개화'/>
+                    </div>
+                    <Image/>
+                  </div>
+                  <dl className='ml-3 tracking-custom pr-5'>
+                    <dt className='text-base text-gray-950 font-bold leading-4'>애기능 동산</dt>
+                    <dd className='text-sm leading-[21px] font-normal text-gray-900 mt-[6px]'>
+                      대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
+                      새로운 회계연도가 개시될 때까지 예산안이 의결
+                    </dd>
+                  </dl>
+                </div>
+                <div className='flex justify-end mt-3 text-[13px] tracking-custom leading-none text-gray-300'>
+                  <Link to={'/'}>수정</Link>
+                  <span className='mx-1'>·</span>
+                  <button>삭제</button>
+                </div>
               </GridLayout>
             ))
           }
@@ -71,9 +125,4 @@ export default function Mypage() {
 
     </main> 
   )
-} 
-
-
-
-
-
+}
