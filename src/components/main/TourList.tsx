@@ -20,7 +20,7 @@ export function TourList(){
 
   return (
     <>
-      <div className={`bg-white rounded-t-[10px] rounded-r-[10px] pt-7 font-pretendard h-[calc(100vh-70px)] flex flex-col `}>
+      <div className={`bg-white rounded-t-[10px] rounded-r-[10px] pt-7 font-pretendard h-[calc(100vh-70px)] flex flex-col z-30 relative select-none`}>
 
         <div className="flex justify-between items-center px-4 flex-none">
           <h2 className="text-xl tracking-[-0.02em] font-semibold">근처의 명소</h2>

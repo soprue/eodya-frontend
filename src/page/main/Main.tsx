@@ -3,13 +3,14 @@ import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import { useCallback, useEffect, useState } from "react";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
-// import { SpotView } from "../../components/main/SpotView";
+import { SpotView } from "../../components/main/SpotView";
 import { LocationBtn } from "../../components/main/Btn/LocationBtn";
-// import { ListLayout } from "../../components/main/ListLayout";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
-
 import { TourList } from "../../components/main/TourList";
+import { ListLayout } from "../../components/main/ListLayout";
+import { useAppDispatch } from "../../store/hooks";
+import { open } from "../../store/features/spotView/slice";
 
 export default function Main() {
 
@@ -33,13 +34,6 @@ export default function Main() {
 
   },[]);
   useEffect(()=>{ getPostion(); },[]);
-
-
-/*   const [viewOpen,setViewOpen] = useState(false);
-  const [smallOpen,setSmallOpen] = useState(false);
-
-  const [tourHide,setTourHide] = useState(false);
-  const [tourOpen,setTourOpen] = useState(false); */
 
   return (
     <>
@@ -78,35 +72,125 @@ export default function Main() {
                 // setSmallOpen(true);
               }}
             />
-            <BlossomMarker
-              position={{ lat: 33.55635, lng: 126.795841 }}
-              onClick={(e)=>{
-                console.log(e);
-                // setSmallOpen(true);
-              }}
-            />
-            <BlossomMarker
-              position={{ lat: 33.55635, lng: 126.795841 }}
-              onClick={(e)=>{
-                console.log(e);
-                // setSmallOpen(true);
-              }}
-            />
           </MarkerClusterer>
         </Map>
 
-        <div className={`absolute bottom-[70px] z-50 w-full`}>
-          <div className="absolute bottom-full left-5 mb-5">
-            <LocationBtn onClick={getPostion}/>
-          </div>
-          <TourList/>
-          {/* <ListLayout/> */}
-        </div>
+        <Test getPostion={getPostion}/>
 
         <Navigation/>
 
       </main>
-      {/* <SpotView/> */}
+      <SpotView/>
     </>
+  )
+}
+
+function Test({getPostion} : {getPostion : any}){
+
+  const [tourOpen,setTourOpen] = useState(false);
+
+  const dispatch = useAppDispatch();
+
+  const [naviHide,setNaviHide] = useState(false);
+  const [move,setMove] = useState(false);
+  const [y,setY] = useState(0);
+
+  const onTouchStart :React.TouchEventHandler<HTMLDivElement> = () => {
+    if(tourOpen){
+      setMove(true);
+    }
+  }
+
+  const onTouchEnd :React.TouchEventHandler<HTMLDivElement> = (e) => {
+
+    if(tourOpen){
+
+      if(move){
+
+        if(y < 50){
+          setY(18);
+        }
+  
+        if(y > 50){
+          setY(85);
+        }
+  
+        setMove(false);
+  
+      }
+
+    }
+
+  }
+
+  const onTouchMove :React.TouchEventHandler<HTMLDivElement> = (e) => {
+
+    if(tourOpen){
+      if(move){
+
+        const touch = e.touches[0];
+        const {clientY} = touch;
+  
+        const y = clientY/window.innerHeight * 100;
+  
+        if(y < 18){
+          setMove(false);
+          return;
+        }
+  
+        setY(Math.ceil(y));
+  
+      }
+    }
+
+  }
+
+  useEffect(()=>{
+
+    if(tourOpen){
+      if(y < 50){
+        setNaviHide(true);
+      }else{
+        setNaviHide(false);
+      }
+    }
+
+  },[y,tourOpen]);
+
+  useEffect(()=>{
+
+    if(tourOpen){
+      setY(85);
+    }
+
+  },[tourOpen]);
+
+  return (
+    <div
+      onTouchMove={onTouchMove}
+      onTouchStart={onTouchStart}
+      onTouchEnd={onTouchEnd}
+      style={{transform : `translateY(${y}%)`}}
+      className={`absolute bottom-[70px] z-50 w-full ${move ? "cursor-grab" : "transition-transform duration-300"}`}
+    >
+      <div className={`absolute bottom-full left-5 mb-5 z-20 transition-transform duration-500 ${naviHide ? "translate-y-[calc(100%+20px)]": ""}`}>
+        <LocationBtn onClick={getPostion}/>
+      </div>
+      {/* <TourList/> */}
+      {/* <div
+        onClick={()=>{
+          dispatch(open());
+        }}
+        className="pt-4 bg-white rounded-t-[10px] rounded-r-[10px]">
+        {
+          [
+            {
+              placeState : "만개",
+              image : [0,1]
+            }
+          ].map((e,i)=><ListLayout item={e} key={i}/>)
+        }
+      </div> */}
+    </div>
   )
 }
