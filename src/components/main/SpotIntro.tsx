@@ -25,8 +25,36 @@ export function SpotIntro({getPostion} : {getPostion : any}){
         setMove(true);
       }
     }
+    const onMouseDown :React.MouseEventHandler<HTMLDivElement> = () => {
+      if(tourOpen){
+        setMove(true);
+      }
+    }
   
     const onTouchEnd :React.TouchEventHandler<HTMLDivElement> = () => {
+  
+      if(tourOpen){
+  
+        if(move){
+  
+          if(spotInfoY <= 50){
+            dispatch(yChange(18));
+          }
+    
+          if(spotInfoY > 80){
+            dispatch(yChange(100));
+          }else if(spotInfoY > 50){
+            dispatch(yChange(85));
+          }
+    
+          setMove(false);
+    
+        }
+  
+      }
+  
+    }
+    const onMouseUp :React.MouseEventHandler<HTMLDivElement> = () => {
   
       if(tourOpen){
   
@@ -57,6 +85,26 @@ export function SpotIntro({getPostion} : {getPostion : any}){
   
           const touch = e.touches[0];
           const {clientY} = touch;
+    
+          const y = clientY/window.innerHeight * 100;
+    
+          if(y < 18){
+            setMove(false);
+            return;
+          }
+  
+          dispatch(yChange(Math.ceil(y)));
+    
+        }
+      }
+  
+    }
+    const onMouseMove :React.MouseEventHandler<HTMLDivElement> = (e) => {
+  
+      if(tourOpen){
+        if(move){
+
+          const {clientY} = e;
     
           const y = clientY/window.innerHeight * 100;
     
@@ -103,6 +151,9 @@ export function SpotIntro({getPostion} : {getPostion : any}){
   
     return (
       <div
+        onMouseDown={onMouseDown}
+        onMouseUp={onMouseUp}
+        onMouseMove={onMouseMove}
         onTouchMove={onTouchMove}
         onTouchStart={onTouchStart}
         onTouchEnd={onTouchEnd}
