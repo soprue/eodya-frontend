@@ -20,7 +20,7 @@ const mock = {
   status: "만개",
 };
 
-const LAST_STEP = 4;
+const LAST_STEP = 3;
 
 function NewReviewPage() {
   const [step, setStep] = useState(1);
@@ -104,13 +104,13 @@ function NewReviewPage() {
             address={formValues.address}
           />
         )}
-        {step === 3 && (
+        {/* {step === 3 && (
           <SpotMore
             onNext={handleSpotMoreChange}
             name={formValues.name}
             address={formValues.address}
           />
-        )}
+        )} */}
         {step === LAST_STEP && (
           <SpotDone
             onNext={handleUpload}
