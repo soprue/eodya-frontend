@@ -8,15 +8,13 @@ import PrivateRoute from './components/login/PrivateRoute';
 import PublicRoute from './components/login/PublicRoute';
 
 function App() {
-
   return (
     <Routes>
       <Route element={<Layout />}>
-        <Route element={<PrivateRoute />}>
-          <Route path="/" element={<Main />} />
-        </Route>
-        
+        <Route element={<PrivateRoute />}></Route>
+
         <Route element={<PublicRoute />}>
+          <Route path="/" element={<Main />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/api/auth/callback/kakao" element={<KakaoCallback />} />
         </Route>
