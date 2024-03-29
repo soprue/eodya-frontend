@@ -6,9 +6,14 @@ import {ReactComponent as BookmarkOutlineSVG} from "../../../assets/image/icon/b
 export const BookMarkBtn = ({numberHide} : {numberHide? : boolean }) => {
 
     const [click,setClick] = useState(false);
+
+    const onClick :React.MouseEventHandler<HTMLDListElement> = (e)=>{
+      e.stopPropagation(); 
+      setClick(!click);
+    }
   
     return (
-      <dl className="text-center font-pretendard cursor-pointer" onClick={()=>setClick(!click)}>
+      <dl className="text-center font-pretendard cursor-pointer" onClick={onClick}>
         <div className="w-6 h-6 flex items-center justify-center">
           {
             click ?

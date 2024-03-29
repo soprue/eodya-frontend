@@ -7,7 +7,7 @@ import { useState } from "react";
 import FlowerTag from "../common/tag/FlowerTag";
 import ShareBtn from "../common/btn/Share/ShareBtn";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import { close } from "../../store/features/spotView/slice";
+import { close } from "../../store/features/main/spotView/slice";
 
 // 스팟상세
 export const SpotView = () => {

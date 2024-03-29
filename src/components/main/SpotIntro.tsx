@@ -1,0 +1,128 @@
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/hooks";
+import { change as yChange  } from "../../store/features/main/spotInfo/ySlice";
+import { change as tourChange } from "../../store/features/main/tourList/openSlice";
+import { LocationBtn } from "./Btn/LocationBtn";
+import { TourList } from "./TourList";
+import { MarkerInfo } from "./MarkerInfo";
+
+export function SpotIntro({getPostion} : {getPostion : any}){
+
+    const dispatch = useAppDispatch();
+  
+    // 하단 Info창 관련 state
+    const spotInfoY = useAppSelector(state=>state.spotInfoY);
+    const tourOpen = useAppSelector(state=>state.tourOpen);
+  
+    // marker 클릭 관련 state
+    const spotInfoOpen = useAppSelector(state=>state.spotInfoOpen);
+  
+    const [naviHide,setNaviHide] = useState(false);
+    const [move,setMove] = useState(false);
+  
+    const onTouchStart :React.TouchEventHandler<HTMLDivElement> = () => {
+      if(tourOpen){
+        setMove(true);
+      }
+    }
+  
+    const onTouchEnd :React.TouchEventHandler<HTMLDivElement> = () => {
+  
+      if(tourOpen){
+  
+        if(move){
+  
+          if(spotInfoY <= 50){
+            dispatch(yChange(18));
+          }
+    
+          if(spotInfoY > 80){
+            dispatch(yChange(100));
+          }else if(spotInfoY > 50){
+            dispatch(yChange(85));
+          }
+    
+          setMove(false);
+    
+        }
+  
+      }
+  
+    }
+  
+    const onTouchMove :React.TouchEventHandler<HTMLDivElement> = (e) => {
+  
+      if(tourOpen){
+        if(move){
+  
+          const touch = e.touches[0];
+          const {clientY} = touch;
+    
+          const y = clientY/window.innerHeight * 100;
+    
+          if(y < 18){
+            setMove(false);
+            return;
+          }
+  
+          dispatch(yChange(Math.ceil(y)));
+    
+        }
+      }
+  
+    }
+  
+    useEffect(()=>{
+  
+      if(tourOpen){
+        if(spotInfoY < 50){
+          setNaviHide(true);
+        }else{
+          setNaviHide(false);
+        }
+      }
+  
+    },[spotInfoY,tourOpen]);
+  
+    useEffect(()=>{
+  
+      if(tourOpen){
+        dispatch(yChange(85));
+      }
+  
+    },[tourOpen]);
+  
+    // 내 위치로 이동 및 이동후 근처의 명소 나오게
+    const handleLocation = ()=>{
+      getPostion();
+      setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
+        dispatch(tourChange(true));
+        dispatch(yChange(85));
+      },500)
+    }
+  
+    return (
+      <div
+        onTouchMove={onTouchMove}
+        onTouchStart={onTouchStart}
+        onTouchEnd={onTouchEnd}
+        style={{transform : `translateY(${spotInfoY}%)`}}
+        className={`absolute bottom-[70px] z-50 w-full ${move ? "cursor-grab" : "transition-transform duration-300"}`}
+      >
+        <div className={`absolute bottom-full left-5 mb-5 z-20 transition-transform duration-500 ${naviHide ? "translate-y-[calc(100%+20px)]": ""}`}>
+          <LocationBtn onClick={handleLocation}/>
+        </div>
+  
+        {
+          !spotInfoOpen &&
+            tourOpen && <TourList/>
+        }
+  
+        {
+          !tourOpen &&
+            spotInfoOpen && <MarkerInfo/>
+        }
+  
+      </div>
+    )
+  }
