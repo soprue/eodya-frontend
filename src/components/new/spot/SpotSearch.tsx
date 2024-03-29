@@ -130,17 +130,31 @@ function SpotSearch({ isOpen, setIsOpen, setValues }: SpotSearchProps) {
           searchResults.map((result, index) => (
             <li
               key={index}
-              className="cursor-pointer border-b py-6"
+              className="flex cursor-pointer items-center justify-between py-5"
               data-lat={result.y}
               data-lng={result.x}
               data-name={result.place_name}
               data-address={result.address_name}
               onClick={handleSelectSpot}
             >
-              <p className="font-bold">{result.place_name}</p>
-              <span className="text-sm text-gray-500">
-                {result.address_name}
-              </span>
+              <div>
+                <p className="font-bold">{result.place_name}</p>
+                <span className="text-sm text-gray-950">
+                  {result.address_name}
+                </span>
+              </div>
+
+              <div>
+                <button
+                  className="box-border flex h-8 w-[87px] items-center rounded-full bg-primary px-4 py-2.5 text-xs text-white"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    console.log(1);
+                  }}
+                >
+                  후기 남기기
+                </button>
+              </div>
             </li>
           ))
         ) : !isLoading ? (

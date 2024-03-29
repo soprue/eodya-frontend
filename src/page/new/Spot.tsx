@@ -7,6 +7,8 @@ import SpotInfo from "../../components/new/spot/SpotInfo";
 import SpotStatus from "../../components/new/spot/SpotStatus";
 import SpotDone from "../../components/new/spot/SpotDone";
 
+const LAST_STEP = 4;
+
 function NewSpotPage() {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({
@@ -63,13 +65,17 @@ function NewSpotPage() {
 
   return (
     <main className="h-dvh w-full">
-      <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
-        <div className="flex h-full items-center justify-center font-medium">
-          새로운 스팟 등록
-        </div>
-      </TopBar>
+      {step !== LAST_STEP && (
+        <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
+          <div className="flex h-full items-center justify-center font-medium">
+            새로운 스팟 등록
+          </div>
+        </TopBar>
+      )}
 
-      <div className="h-[calc(100%-56px)] w-full">
+      <div
+        className={`${step !== LAST_STEP ? "h-[calc(100%-56px)] bg-white" : "h-full bg-gray-100"} w-full`}
+      >
         {step === 1 && (
           <SpotMap onNext={handleSpotMapChange} formValues={formValues} />
         )}
