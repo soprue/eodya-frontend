@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 
 import TopBar from "../../components/common/menu/TopBar";
 import SpotMap from "../../components/new/spot/SpotMap";
-import SpotInfo from "../../components/new/spot/SpotInfo";
-import SpotStatus from "../../components/new/spot/SpotStatus";
-import SpotDone from "../../components/new/spot/SpotDone";
+import SpotInfo from "../../components/new/SpotInfo";
+import SpotStatus from "../../components/new/SpotStatus";
+import SpotDone from "../../components/new/SpotDone";
 
 const LAST_STEP = 4;
 
@@ -65,7 +65,7 @@ function NewSpotPage() {
 
   return (
     <main className="h-dvh w-full">
-      {step !== LAST_STEP && (
+      {step > 1 && step !== LAST_STEP && (
         <TopBar canClose={step >= 2 && true} onBack={handleBackClick}>
           <div className="flex h-full items-center justify-center font-medium">
             새로운 스팟 등록
@@ -74,7 +74,7 @@ function NewSpotPage() {
       )}
 
       <div
-        className={`${step !== LAST_STEP ? "h-[calc(100%-56px)] bg-white" : "h-full bg-gray-100"} w-full`}
+        className={`${step > 1 && step !== LAST_STEP ? "h-[calc(100%-56px)] bg-white" : "h-full bg-gray-100"} w-full`}
       >
         {step === 1 && (
           <SpotMap onNext={handleSpotMapChange} formValues={formValues} />
@@ -84,6 +84,7 @@ function NewSpotPage() {
             onNext={handleSpotInfoChange}
             name={formValues.name}
             address={formValues.address}
+            type="spot"
           />
         )}
         {step === 3 && (
@@ -93,11 +94,12 @@ function NewSpotPage() {
             address={formValues.address}
           />
         )}
-        {step === 4 && (
+        {step === LAST_STEP && (
           <SpotDone
             onNext={handleUpload}
             name={formValues.name}
             address={formValues.address}
+            type="spot"
           />
         )}
       </div>

@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-import Btn from "../../common/btn/Btn";
+import Btn from "../common/btn/Btn";
 
 interface SpotStatusProps {
   onNext: (data: any) => void;
