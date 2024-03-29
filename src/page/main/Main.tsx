@@ -12,6 +12,8 @@ import { ListLayout } from "../../components/main/ListLayout";
 import { useAppDispatch } from "../../store/hooks";
 import { open } from "../../store/features/spotView/slice";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
+import { BookMarkBtn } from "../../components/common/btn/BookMarkBtn";
+import BookMarker from "../../components/common/marker/BookMarker";
 
 export default function Main() {
 
@@ -83,7 +85,6 @@ export default function Main() {
                 position={{lat : location.latitude, lng : location.longitude}}
               />
             }
-            
 
             {/* 벚꽃 */}
             <BlossomMarker
