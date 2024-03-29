@@ -27,24 +27,33 @@ function KakaoCallback() {
           },
         },
       )
-      .then((res) => {
+      .then((res: any) => {
         const { access_token } = res.data;
         console.log('res', res);
         console.log('access_token', access_token);
 
-        return axios.get(`https://kapi.kakao.com/v2/user/me`, {
-          headers: {
-            Authorization: `Bearer ${access_token}`,
+        return axios.post(
+          `${process.env.REACT_APP_BASE_URL}/api/v1/user/login`,
+          {
+            token: access_token,
           },
-        });
+        );
+        // return axios.get(`https://kapi.kakao.com/v2/user/me`, {
+        //   headers: {
+        //     Authorization: `Bearer ${access_token}`,
+        //   },
+        // });
       })
-      .then((res) => {
+      .then((res: any) => {
         console.log('사용자 정보', res);
-
-        dispatch(login({ username: 'User' }));
-        navigate('/');
       })
-      .catch((error) => {
+      // .then((res: any) => {
+      //   console.log('사용자 정보', res);
+
+      //   dispatch(login({ username: 'User' }));
+      //   navigate('/');
+      // })
+      .catch((error: any) => {
         console.log(error);
         navigate('/login');
       });
