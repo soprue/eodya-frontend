@@ -16,27 +16,23 @@ import { change as InfoChange  } from "../../store/features/main/spotInfo/InfoSl
 import { getMarker, getBookMarker } from "../../store/features/main/marker/markerSlice";
 import { SpotIntro } from "../../components/main/SpotIntro";
 import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
+import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 export default function Main() {
 
   const dispatch = useAppDispatch();
   const {userInfo} = useAppSelector(state=>state.auth);
-
   const [bookMark,setBookMark] = useState(false);
 
   // 마커 fetch
-  const {loading, markers, error : markerError} = useAppSelector(state=>state.mainMarker);
+  const {markers} = useAppSelector(state=>state.mainMarker);
   // 마커 가져오기
   useEffect(()=>{ 
 
     if(!userInfo) return;
+    dispatch(getMarker(userInfo.token)); 
 
-    if(bookMark){
-      dispatch(getBookMarker(userInfo.token)); 
-    }else{
-      dispatch(getMarker(userInfo.token)); 
-    }
-  },[bookMark]);
+  },[bookMark,userInfo]);
 
   // 지도 초기위치 설정
   const [state, setState] = useState({
@@ -62,20 +58,45 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  // useEffect(()=>{ getPostion(); },[]);
+  useEffect(()=>{ getPostion(); getTourList(); },[]);
+
+  // 현재 위치를 토대로 근처의 명소 가져오기
+  const getTourList = ()=>{
+
+    if(!userInfo) return;
+
+    const geocoder = new kakao.maps.services.Geocoder();
+
+    geocoder.coord2Address(state.center.lng,state.center.lat, (result,status)=>{
+      if(status === kakao.maps.services.Status.OK){
+        dispatch(
+          getTourPlace({
+            token : userInfo.token, 
+            address : result[0].address.region_1depth_name,
+            page : 1 
+          })
+        );
+      }else{
+        console.log('error');
+      }
+    })
+
+  }
 
   // 현재위치 watch
-  const {location,error} = useWatchLocation();
+  const {location} = useWatchLocation();
 
   return (
     <>
       <main className="h-screen overflow-hidden relative">
 
+        {/* 검색버튼 */}
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
           <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark}/>
         </div>
 
+        {/* 맵 */}
         <Map
           center={state.center}
           isPanto={state.isPanto}
@@ -114,41 +135,28 @@ export default function Main() {
           {/* 마커 */}
           {
             markers.map((e,i)=>(
-              !bookMark ?
-                <BlossomMarker
-                  key={i+e.x+e.y}
-                  position={{ lat: e.x, lng: e.y }}
-                  onClick={()=>{
-                    if(!userInfo) return;
-                    // 인포창 나오게
-                    dispatch(yChange(0));
-                    dispatch(TourChange(false));
-                    dispatch(InfoChange(true));
-                    // info 데이터
-                    dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
-                  }}
-                />
-              :
-                <BookMarker
-                  key={i+e.x+e.y}
-                  position={{ lat: e.x, lng: e.y }}
-                  onClick={()=>{
-                    if(!userInfo) return;
-                    // 인포창 나오게
-                    dispatch(yChange(0));
-                    dispatch(TourChange(false));
-                    dispatch(InfoChange(true));
-                    // info 데이터
-                    dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
-                  }}
-                />
+              <BlossomMarker
+                key={i+e.x+e.y}
+                position={{ lat: e.x, lng: e.y }}
+                onClick={()=>{
+                  if(!userInfo) return;
+                  // 인포창 나오게
+                  dispatch(yChange(0));
+                  dispatch(TourChange(false));
+                  dispatch(InfoChange(true));
+                  // info 데이터
+                  dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
+                }}
+              />
             ))
           }
 
         </Map>
 
-        <SpotIntro getPostion={getPostion}/>
+        {/* 마커 관련 명소 */}
+        <SpotIntro getPostion={getPostion} getTourList={getTourList}/>
 
+        {/* 네비게이션바 */}
         <Navigation/>
 
       </main>

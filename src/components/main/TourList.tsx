@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
-import { ListLayout } from "./ListLayout";
 import RankModal from "./Modal/RankModal";
+import { useAppSelector } from "../../store/hooks";
+import { TourListLayout } from "./TourListLayout";
 
 
 // scrollbar-hide
@@ -9,6 +10,8 @@ import RankModal from "./Modal/RankModal";
 export function TourList(){
 
   const [isOpen,setIsOpenl] = useState(false);
+
+  const {data} = useAppSelector(state=>state.tourPlace);
 
   const onOpen = ()=>{
     setIsOpenl(true);
@@ -33,28 +36,9 @@ export function TourList(){
         </div>
 
         <div className="overflow-y-auto h-full scrollbar-hide">
-          {/* {
-            [
-              {
-                placeState : "만개",
-                image : [0,1]
-              },
-              {
-                placeState : "개화",
-                image : [0]
-              },
-              {
-                placeState : "내년에 만나요",
-                image : [0,1]
-              },
-              {
-                placeState : "개화",
-                image : [0]
-              }
-            ].map((e,i)=>(
-              <ListLayout item={e} key={i}/>
-            ))
-          } */}
+          {
+            data.reviewDetailList.map((e,i)=><TourListLayout item={e} key={i} />)
+          }
         </div>
 
       </div>

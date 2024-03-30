@@ -37,8 +37,8 @@ export default function RankModal({isOpen,onClose} : {isOpen : boolean, onClose 
             <h2 className="text-lg px-5 tracking-custom font-semibold leading-[23.4px]">정렬기준</h2>
             <ul className="border-b border-gray-100 mt-[10px] leading-4">
                 <li className="cursor-pointer p-5 font-bold text-primary flex justify-between items-center">랭킹순 <Check/></li>
-                <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">거리순 <Check/></li>
-                <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">후기순 <Check/></li>
+                {/* <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">거리순 <Check/></li> */}
+                {/* <li className="cursor-pointer p-5 text-gray-600 font-normal border-t border-gray-100 flex justify-between items-center">후기순 <Check/></li> */}
             </ul>
             <div className="text-right px-5 mt-4 text-gray-600 leading-[20.8px]">
                 <button onClick={handleClose}>취소</button>
