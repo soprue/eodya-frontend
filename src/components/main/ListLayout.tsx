@@ -37,7 +37,7 @@ export const ListLayout = ({item,onClick} : {item : InfoPlaceType,onClick? : Rea
           </dl>
           {/* <p className="text-[13px] mt-1 leading-[13px] text-info-300 font-semibold">820m</p> */}
         </div>
-        <BookMarkBtn/>
+        <BookMarkBtn placeId={""} status={false}/>
       </div>
 
     </div>

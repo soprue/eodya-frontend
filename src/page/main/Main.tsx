@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
@@ -6,20 +7,23 @@ import BlossomMarker from "../../components/common/marker/BlossomMarker";
 import { SpotView } from "../../components/main/SpotView";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
+import { logout } from "../../store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 import BookMarker from "../../components/common/marker/BookMarker";
 import UserMarker from "../../components/common/marker/UserMarker";
-import { change as yChange  } from "../../store/features/main/spotInfo/ySlice";
+import { change as yChange } from "../../store/features/main/spotInfo/ySlice";
 import { change as TourChange } from "../../store/features/main/tourList/openSlice";
-import { change as InfoChange  } from "../../store/features/main/spotInfo/InfoSlice";
-import { getMarker, getBookMarker } from "../../store/features/main/marker/markerSlice";
+import { change as InfoChange } from "../../store/features/main/spotInfo/InfoSlice";
+import {
+  getMarker,
+  getBookMarker,
+} from "../../store/features/main/marker/markerSlice";
 import { SpotIntro } from "../../components/main/SpotIntro";
 import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
 import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 export default function Main() {
-
   const dispatch = useAppDispatch();
   const {userInfo} = useAppSelector(state=>state.auth);
   const [bookMark,setBookMark] = useState(false);
@@ -43,14 +47,13 @@ export default function Main() {
   });
 
   // 포지션 가져오기
-  const getPostion = useCallback( async ()=>{
-
+  const getPostion = useCallback(async () => {
     const result = await getCurrentLocation();
-    if(!result) return;
+    if (!result) return;
 
-    const {center,error} = result;
+    const { center, error } = result;
 
-    if(error){
+    if (error) {
       return alert(error.message);
     }
 
@@ -89,49 +92,56 @@ export default function Main() {
 
   return (
     <>
-      <main className="h-screen overflow-hidden relative">
+      <main className="relative h-screen overflow-hidden">
+        <div className="absolute top-[30px] z-50 w-full px-4">
+          <Input type="text" placeholder="장소를 검색해 보세요" />
+          <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark} />
 
         {/* 검색버튼 */}
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
           <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark}/>
+          {/* 임시 로그아웃 버튼 */}
+          <button
+            onClick={() => dispatch(logout())}
+            className="m-2 bg-white p-2"
+          >
+            로그아웃
+          </button>
         </div>
 
         {/* 맵 */}
         <Map
           center={state.center}
           isPanto={state.isPanto}
-          style={{ width: "100%", height : "100%" }}
+          style={{ width: "100%", height: "100%" }}
           level={5}
-          onDragStart={()=>{
+          onDragStart={() => {
             dispatch(yChange(100)); // spotY = 100
-            setTimeout(()=>{
+            setTimeout(() => {
               dispatch(TourChange(false));
               dispatch(InfoChange(false));
-            },300);
+            }, 300);
           }}
-          onCenterChanged={(map)=>{
-            
+          onCenterChanged={(map) => {
             // 중심좌표 변경
             const latlng = map.getCenter();
             setState({
-              center : {
-                lat : latlng.getLat(),
-                lng : latlng.getLng(),
+              center: {
+                lat: latlng.getLat(),
+                lng: latlng.getLng(),
               },
               isPanto: false,
             });
-
           }}
         >
           {/* 유저 */}
-          {
-            location &&
+          {location && (
             <UserMarker
               clickable={true}
-              position={{lat : location.latitude, lng : location.longitude}}
+              position={{ lat: location.latitude, lng: location.longitude }}
             />
-          }
+          )}
 
           {/* 마커 */}
           {
@@ -149,9 +159,8 @@ export default function Main() {
                   dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
                 }}
               />
-            ))
-          }
-
+            ),
+          )}
         </Map>
 
         {/* 마커 관련 명소 */}
@@ -160,8 +169,9 @@ export default function Main() {
         {/* 네비게이션바 */}
         <Navigation/>
 
+        <Navigation />
       </main>
-      <SpotView/>
+      <SpotView />
     </>
-  )
+  );
 }
