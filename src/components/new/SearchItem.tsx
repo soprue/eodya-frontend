@@ -16,22 +16,22 @@ function SearchItem({ data, handleSelectSpot }: SearchItemProps) {
       <div>
         <div className="flex items-center font-bold">
           {data.place_name}
-          <span className="ml-2 flex h-[18px] items-center justify-center rounded bg-primary px-1.5 text-[10px] font-semibold text-white">
+          {/* <span className="ml-2 flex h-[18px] items-center justify-center rounded bg-primary px-1.5 text-[10px] font-semibold text-white">
             만개
-          </span>
+          </span> */}
         </div>
         <span className="text-sm text-gray-950">{data.address_name}</span>
       </div>
 
       <div>
-        <button
+        {/* <button
           className="box-border flex h-8 w-[87px] items-center rounded-full bg-primary px-4 py-2.5 text-xs text-white"
           onClick={(e) => {
             e.stopPropagation();
           }}
         >
           후기 남기기
-        </button>
+        </button> */}
       </div>
     </li>
   );
