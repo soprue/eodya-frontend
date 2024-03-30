@@ -9,15 +9,15 @@ import SpotMore from "../../components/new/review/SpotMore";
 
 const mock = {
   name: "애기능 동산",
-  address: "서울 성북구 안암로 73-15",
-  lat: 33.450701,
-  lng: 126.570667,
-  comments: `대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
+  addressDetail: "서울 성북구 안암로 73-15",
+  reviewContent: `대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
   새로운 회계연도가 개시될 때까지 예산안이 의결되지
   못한 때에는 정부는 국회에서 예산안이 의결될 때까지
   다음의 목적을 위한 경비는 전년도 예산에 준하여 집행할 수 있다.`,
+  placeStatus: "FULL_BLOOM",
+  x: 126.570667,
+  y: 33.450701,
   images: [],
-  status: "만개",
 };
 
 const LAST_STEP = 3;
@@ -26,12 +26,13 @@ function NewReviewPage() {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({
     name: mock.name,
-    address: mock.address,
-    lat: mock.lat,
-    lng: mock.lng,
-    comments: "",
+    addressDetail: mock.addressDetail,
+    reviewContent: "",
+    placeStatus: null,
+    x: mock.x,
+    y: mock.y,
+    reviewDate: new Date().toISOString().substring(0, 10),
     images: [],
-    status: null,
   });
   const navigate = useNavigate();
 
@@ -93,7 +94,7 @@ function NewReviewPage() {
           <SpotInfo
             onNext={handleSpotInfoChange}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
             type="review"
           />
         )}
@@ -101,7 +102,7 @@ function NewReviewPage() {
           <SpotStatus
             onNext={handleSpotStatusChange}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
           />
         )}
         {/* {step === 3 && (
@@ -115,9 +116,9 @@ function NewReviewPage() {
           <SpotDone
             onNext={handleUpload}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
             type="review"
-            state={formValues.status}
+            placeStatus={formValues.placeStatus}
           />
         )}
       </div>

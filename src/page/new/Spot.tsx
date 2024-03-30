@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
+import { useAppSelector } from "../../store/hooks";
 import TopBar from "../../components/common/menu/TopBar";
 import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/SpotInfo";
@@ -10,6 +12,8 @@ import SpotDone from "../../components/new/SpotDone";
 const LAST_STEP = 4;
 
 function NewSpotPage() {
+  // const userInfo = useAppSelector((state) => state.auth.userInfo);
+
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({
     name: "",
@@ -36,6 +40,8 @@ function NewSpotPage() {
     setFormValues((prevValues) => ({
       ...prevValues,
       ...restData,
+      addressDepth1: data.addressDetail.split(" ")[0],
+      addressDepth2: data.addressDetail.split(" ")[1],
     }));
 
     setStep((prev) => prev + 1);
@@ -62,6 +68,20 @@ function NewSpotPage() {
   const handleUpload = () => {
     // TODO: 마이 페이지 제보 화면으로 이동
     console.log(formValues);
+
+    // axios
+    //   .post(`/api/v1/place`, formValues, {
+    //     headers: {
+    //       "Content-type": "multipart/form-data",
+    //       Authorization: `Bearer ${access_token}`,
+    //     },
+    //   })
+    //   .then((res: any) => {
+    //     console.log(res);
+    //   })
+    //   .catch((error: any) => {
+    //     console.log(error);
+    //   });
   };
 
   return (
