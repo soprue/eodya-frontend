@@ -1,37 +1,28 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
+import { useAppSelector } from "../../store/hooks";
 import TopBar from "../../components/common/menu/TopBar";
 import SpotInfo from "../../components/new/SpotInfo";
 import SpotStatus from "../../components/new/SpotStatus";
 import SpotDone from "../../components/new/SpotDone";
 import SpotMore from "../../components/new/review/SpotMore";
-
-const mock = {
-  name: "애기능 동산",
-  addressDetail: "서울 성북구 안암로 73-15",
-  reviewContent: `대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
-  새로운 회계연도가 개시될 때까지 예산안이 의결되지
-  못한 때에는 정부는 국회에서 예산안이 의결될 때까지
-  다음의 목적을 위한 경비는 전년도 예산에 준하여 집행할 수 있다.`,
-  placeStatus: "FULL_BLOOM",
-  x: 126.570667,
-  y: 33.450701,
-  images: [],
-};
+import { SpotFormValuesType } from "../../types/SpotFormValuesType";
 
 const LAST_STEP = 3;
 
 function NewReviewPage() {
+  let { id } = useParams();
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
+
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState({
-    name: mock.name,
-    addressDetail: mock.addressDetail,
+  const [formValues, setFormValues] = useState<Partial<SpotFormValuesType>>({
+    name: "",
+    addressDetail: "",
     reviewContent: "",
     placeStatus: null,
-    x: mock.x,
-    y: mock.y,
-    reviewDate: new Date().toISOString().substring(0, 10),
+    reviewDate: null,
     images: [],
   });
   const navigate = useNavigate();
@@ -45,6 +36,9 @@ function NewReviewPage() {
   };
 
   const handleSpotInfoChange = (data: any) => {
+    if (data.reviewDate === null)
+      data.reviewDate = new Date().toISOString().substring(0, 10);
+
     setFormValues((prevValues) => ({
       ...prevValues,
       ...data,
@@ -56,10 +50,8 @@ function NewReviewPage() {
   const handleSpotStatusChange = (data: any) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      status: data,
+      placeStatus: data,
     }));
-
-    setStep((prev) => prev + 1);
   };
 
   // const handleSpotMoreChange = (data: any) => {
@@ -72,10 +64,68 @@ function NewReviewPage() {
   //   setStep((prev) => prev + 1);
   // };
 
-  const handleUpload = () => {
-    // TODO: 마이 페이지 제보 화면으로 이동
-    console.log(formValues);
-  };
+  useEffect(() => {
+    axios
+      .get(`/api/v1/place/detail/${id}`, {
+        headers: {
+          Authorization: `${userInfo?.token}`,
+        },
+      })
+      .then((res: any) => {
+        setFormValues((prevValues) => ({
+          ...prevValues,
+          name: res.data.name,
+          addressDetail: res.data.addressDetail,
+        }));
+      })
+      .catch((error: any) => {
+        console.log(error);
+        if (error.response.data.code === "PLA-001") {
+          navigate("/404");
+        }
+      });
+  }, []);
+
+  useEffect(() => {
+    if (formValues.placeStatus) {
+      const json = {
+        placeId: id,
+        reviewDate: formValues.reviewDate,
+        placeStatus: formValues.placeStatus,
+        reviewContent: formValues.reviewContent,
+      };
+
+      const formData = new FormData();
+      formData.append(
+        "review",
+        new Blob([JSON.stringify(json)], {
+          type: "application/json",
+        }),
+      );
+
+      for (const key in formValues) {
+        if (key === "images" && Array.isArray(formValues[key])) {
+          (formValues[key] as File[]).forEach((file) => {
+            formData.append("image", file);
+          });
+        }
+      }
+
+      axios
+        .post(`/api/v1/review`, formData, {
+          headers: {
+            Authorization: `${userInfo?.token}`,
+            "Contest-Type": "multipart/form-data",
+          },
+        })
+        .then((res: any) => {
+          setStep((prev) => prev + 1);
+        })
+        .catch((error: any) => {
+          console.log(error);
+        });
+    }
+  }, [formValues.placeStatus]);
 
   return (
     <main className="h-dvh w-full">
@@ -93,16 +143,17 @@ function NewReviewPage() {
         {step === 1 && (
           <SpotInfo
             onNext={handleSpotInfoChange}
-            name={formValues.name}
-            address={formValues.addressDetail}
+            name={formValues.name as string}
+            address={formValues.addressDetail as string}
+            initialFormValues={formValues}
             type="review"
           />
         )}
         {step === 2 && (
           <SpotStatus
             onNext={handleSpotStatusChange}
-            name={formValues.name}
-            address={formValues.addressDetail}
+            name={formValues.name as string}
+            address={formValues.addressDetail as string}
           />
         )}
         {/* {step === 3 && (
@@ -114,9 +165,9 @@ function NewReviewPage() {
         )} */}
         {step === LAST_STEP && (
           <SpotDone
-            onNext={handleUpload}
-            name={formValues.name}
-            address={formValues.addressDetail}
+            onNext={() => navigate("/mypage/review")}
+            name={formValues.name as string}
+            address={formValues.addressDetail as string}
             type="review"
             placeStatus={formValues.placeStatus}
           />

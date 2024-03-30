@@ -64,7 +64,7 @@ function SpotMore({ onNext, name, address }: SpotMoreProps) {
       </div>
 
       <div className="w-full py-3">
-        <Btn>완료</Btn>
+        <Btn>다음</Btn>
       </div>
     </form>
   );

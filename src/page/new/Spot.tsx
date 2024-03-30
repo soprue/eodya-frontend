@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -8,7 +8,7 @@ import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/SpotInfo";
 import SpotStatus from "../../components/new/SpotStatus";
 import SpotDone from "../../components/new/SpotDone";
-import { FormValuesType } from "../../types/FormValuesType";
+import { SpotFormValuesType } from "../../types/SpotFormValuesType";
 
 const LAST_STEP = 4;
 
@@ -16,7 +16,7 @@ function NewSpotPage() {
   const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState<FormValuesType>({
+  const [formValues, setFormValues] = useState<SpotFormValuesType>({
     name: "",
     addressDetail: "",
     reviewContent: "",
@@ -65,37 +65,39 @@ function NewSpotPage() {
       ...prevValues,
       placeStatus: data,
     }));
-
-    setStep((prev) => prev + 1);
   };
 
-  const handleUpload = () => {
-    const formData = new FormData();
+  useEffect(() => {
+    if (formValues.placeStatus) {
+      const formData = new FormData();
 
-    for (const key in formValues) {
-      if (key === "images" && Array.isArray(formValues[key])) {
-        formValues[key].forEach((file) => {
-          formData.append(key, file);
-        });
-      } else {
-        formData.append(key, String(formValues[key]));
+      for (const key in formValues) {
+        if (key === "images" && Array.isArray(formValues[key])) {
+          formValues[key].forEach((file) => {
+            formData.append(key, file);
+          });
+        } else {
+          formData.append(key, String(formValues[key]));
+        }
       }
-    }
 
-    axios
-      .post(`/api/v1/place`, formData, {
-        headers: {
-          Authorization: `${userInfo?.token}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res);
-        // TODO: 마이 페이지 제보 화면으로 이동
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  };
+      axios
+        .post(`/api/v1/place`, formData, {
+          headers: {
+            Authorization: `${userInfo?.token}`,
+          },
+        })
+        .then((res: any) => {
+          setStep((prev) => prev + 1);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          if (error?.response?.data.code === "PLA-002") {
+            alert("이미 등록된 장소입니다.");
+          }
+        });
+    }
+  }, [formValues.placeStatus]);
 
   if (!userInfo) return null;
 
@@ -120,6 +122,7 @@ function NewSpotPage() {
             onNext={handleSpotInfoChange}
             name={formValues.name}
             address={formValues.addressDetail}
+            initialFormValues={formValues}
             type="spot"
           />
         )}
@@ -132,7 +135,7 @@ function NewSpotPage() {
         )}
         {step === LAST_STEP && (
           <SpotDone
-            onNext={handleUpload}
+            onNext={() => navigate("/mypage/review")}
             name={formValues.name}
             address={formValues.addressDetail}
             type="spot"

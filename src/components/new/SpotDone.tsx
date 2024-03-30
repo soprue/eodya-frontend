@@ -42,9 +42,7 @@ function SpotDone({ onNext, name, address, type, placeStatus }: SpotDoneProps) {
       </div>
 
       <div className="w-full py-3">
-        <Btn className={`!bg-gray-950}`} onClick={onNext}>
-          확인
-        </Btn>
+        <Btn onClick={onNext}>확인</Btn>
       </div>
     </div>
   );
