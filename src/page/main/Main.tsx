@@ -59,10 +59,10 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  useEffect(()=>{ getPostion(); },[]);
+  useEffect(()=>{ getPostion(); setTimeout(()=>{getTourList()},2000) },[]);
 
   // 현재 위치를 토대로 근처의 명소 가져오기
-  /* const getTourList = ()=>{
+  const getTourList = ()=>{
 
     if(!userInfo) return;
 
@@ -83,7 +83,7 @@ export default function Main() {
 
     })
 
-  } */
+  }
 
   // 현재위치 watch
   const {location} = useWatchLocation();
@@ -151,14 +151,6 @@ export default function Main() {
               />
             ),
           )}
-          
-          <BlossomMarker
-            position={{ lat: state.center.lat, lng: state.center.lng }}
-            onClick={()=>{
-              dispatch(spotShow());
-              dispatch(hide());
-            }}
-          />
 
         </Map>
 
