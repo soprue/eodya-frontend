@@ -62,15 +62,15 @@ function NewReviewPage() {
     setStep((prev) => prev + 1);
   };
 
-  const handleSpotMoreChange = (data: any) => {
-    console.log(formValues);
-    setFormValues((prevValues) => ({
-      ...prevValues,
-      ...data,
-    }));
+  // const handleSpotMoreChange = (data: any) => {
+  //   console.log(formValues);
+  //   setFormValues((prevValues) => ({
+  //     ...prevValues,
+  //     ...data,
+  //   }));
 
-    setStep((prev) => prev + 1);
-  };
+  //   setStep((prev) => prev + 1);
+  // };
 
   const handleUpload = () => {
     // TODO: 마이 페이지 제보 화면으로 이동

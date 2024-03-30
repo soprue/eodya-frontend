@@ -129,11 +129,9 @@ function SpotSearch({ isOpen, setIsOpen, setValues }: SpotSearchProps) {
           </div>
         ) : searchResults && searchResults.length > 0 ? (
           searchResults.map((result, index) => (
-            <SearchItem
-              key={index}
-              data={result}
-              handleSelectSpot={handleSelectSpot}
-            />
+            <div key={index}>
+              <SearchItem data={result} handleSelectSpot={handleSelectSpot} />
+            </div>
           ))
         ) : !isLoading ? (
           <li className="py-6 text-center text-sm text-gray-500">
