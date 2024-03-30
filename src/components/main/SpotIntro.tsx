@@ -148,10 +148,7 @@ export function SpotIntro({getPostion,getTourList} : {getPostion : any,getTourLi
       setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
         dispatch(InfoChange(false));
       },200)
-      setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
-        dispatch(TourChange(true));
-      },500)
-      getTourList();
+      getTourList(); // 근처의 명소 가져오기
     }
   
     return (

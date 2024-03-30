@@ -1,4 +1,3 @@
-import { ReviewDetailList } from "../../store/features/main/tourList/tourPlace"
 import { InfoPlaceType } from "../../types/InfoPlaceType"
 import { BookMarkBtn } from "../common/btn/BookMarkBtn"
 import FlowerTag from "../common/tag/FlowerTag"

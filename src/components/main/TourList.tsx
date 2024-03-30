@@ -1,24 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 import RankModal from "./Modal/RankModal";
 import { useAppSelector } from "../../store/hooks";
 import { TourListLayout } from "./TourListLayout";
-
-
-// scrollbar-hide
+import { change as TourChange } from "../../store/features/main/tourList/openSlice";
 
 export function TourList(){
 
-  const [isOpen,setIsOpenl] = useState(false);
-
+  const [isOpen,setIsOpen] = useState(false);
   const {data} = useAppSelector(state=>state.tourPlace);
 
-  const onOpen = ()=>{
-    setIsOpenl(true);
-  }
+  useEffect(()=>{
 
+    if(data.placeDetails.length > 0){
+      console.log(data);
+      TourChange(true);
+    }else{
+      TourChange(false);
+    }
+
+  },[data])
+
+  // 모달창
+  const onOpen = ()=>{
+    setIsOpen(true);
+  }
+  // 모달창 닫기
   const onClose = ()=>{
-    setIsOpenl(false);
+    setIsOpen(false);
   }
 
   return (
@@ -37,7 +46,7 @@ export function TourList(){
 
         <div className="overflow-y-auto h-full scrollbar-hide">
           {
-            data.reviewDetailList.map((e,i)=><TourListLayout item={e} key={i} />)
+            data.placeDetails.map((e,i)=><TourListLayout item={e} key={i} />)
           }
         </div>
 

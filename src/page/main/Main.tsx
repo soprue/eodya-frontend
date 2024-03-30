@@ -58,7 +58,7 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  useEffect(()=>{ getPostion(); getTourList(); },[]);
+  useEffect(()=>{ getPostion(); setTimeout(()=>getTourList(),200) },[]);
 
   // 현재 위치를 토대로 근처의 명소 가져오기
   const getTourList = ()=>{
@@ -77,8 +77,9 @@ export default function Main() {
           })
         );
       }else{
-        console.log('error');
+        dispatch(TourChange(false));
       }
+
     })
 
   }

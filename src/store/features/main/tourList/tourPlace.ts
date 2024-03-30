@@ -4,27 +4,25 @@ import axios from "axios";
 export interface TourPlaceType {
     loading : boolean
     data : {
-        reviewTotalCount: number;
-        reviewDetailList: ReviewDetailList[];
+        placeDetails: PlaceDetail[];
         hasNext: boolean;
     }
     error : boolean
 }
 
-export interface ReviewDetailList {
-    userId: number;
-    nickName: string;
-    reviewDate: string;
-    reviewImage: string[];
+export interface PlaceDetail {
+    placeId: number;
+    name: string;
+    addressDetail: string;
+    placeImage: string;
+    bookmarkStatus: boolean;
     placeStatus: string;
-    reviewContent: string;
 }
 
 const initialState :TourPlaceType = {
     loading : true,
     data : {
-        reviewTotalCount: 0,
-        reviewDetailList: [],
+        placeDetails: [],
         hasNext: false
     },
     error : false,
@@ -36,7 +34,7 @@ createAsyncThunk(
     async ({token,address,page} : {token : string,address:string,page:number}
 ) =>{
 
-    const response = await axios.get(`/api/v1/place/search?page=${page}&size=10`,{
+    const response = await axios.post(`/api/v1/place/search?page=${page}&size=10`,{address : "서울"},{
         headers : {
             Authorization : token,
             "Content-Type" : "application/json",
@@ -44,7 +42,6 @@ createAsyncThunk(
     });
 
     const {data} = response;
-    console.log(data);
     return data;
 
 });
