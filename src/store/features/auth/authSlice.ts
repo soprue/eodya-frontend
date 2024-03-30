@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 interface State {
   isLoggedIn: boolean;
-  userInfo: { username: string } | null;
+  userInfo: { username: string; token: string; userId: number } | null;
 }
 
 const initialState: State = {
