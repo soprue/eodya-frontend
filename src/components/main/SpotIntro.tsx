@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { change as yChange  } from "../../store/features/main/spotInfo/ySlice";
-import { change as tourChange } from "../../store/features/main/tourList/openSlice";
+import { change as TourChange } from "../../store/features/main/tourList/openSlice";
+import { change as InfoChange } from "../../store/features/main/spotInfo/InfoSlice";
 import { LocationBtn } from "./Btn/LocationBtn";
 import { TourList } from "./TourList";
 import { MarkerInfo } from "./MarkerInfo";
@@ -143,9 +144,12 @@ export function SpotIntro({getPostion} : {getPostion : any}){
     // 내 위치로 이동 및 이동후 근처의 명소 나오게
     const handleLocation = ()=>{
       getPostion();
+      dispatch(yChange(100));
       setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
-        dispatch(tourChange(true));
-        dispatch(yChange(85));
+        dispatch(InfoChange(false));
+      },200)
+      setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
+        dispatch(TourChange(true));
       },500)
     }
   
