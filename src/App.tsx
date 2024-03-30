@@ -14,6 +14,7 @@ import LoginPage from "./page/login/Login";
 import Spinner from "./components/common/spinner/Spinner";
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
+const NotFound = lazy(() => import("./page/404/NotFound"));
 
 function App() {
   // const [loading, setLoading] = useState(false);
@@ -82,7 +83,7 @@ function App() {
 
           {/* Private Routes */}
           <Route
-            path="new/review"
+            path="new/review/:id"
             element={
               <PrivateRoute>
                 <NewReviewPage />
@@ -90,13 +91,15 @@ function App() {
             }
           />
           <Route
-            path="/new/spot"
+            path="new/spot"
             element={
               <PrivateRoute>
                 <NewSpotPage />
               </PrivateRoute>
             }
           />
+
+          <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>
     </Suspense>

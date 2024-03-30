@@ -1,4 +1,4 @@
-export interface FormValuesType {
+export interface SpotFormValuesType {
   [key: string]: string | number | null | File[] | Blob;
   name: string;
   addressDetail: string;
@@ -6,7 +6,7 @@ export interface FormValuesType {
   placeStatus: null;
   x: number;
   y: number;
-  reviewDate: string;
+  reviewDate: string | null;
   images: File[];
   addressDepth1: string;
   addressDepth2: string;

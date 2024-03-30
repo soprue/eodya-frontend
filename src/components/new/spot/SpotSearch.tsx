@@ -37,9 +37,9 @@ function SpotSearch({ isOpen, setIsOpen, setValues }: SpotSearchProps) {
     setValues((prevValues: any) => ({
       ...prevValues,
       name,
-      address,
-      lat,
-      lng,
+      addressDetail: address,
+      y: lat,
+      x: lng,
       isPanto: true,
     }));
 

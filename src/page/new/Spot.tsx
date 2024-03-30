@@ -1,14 +1,16 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 import { useAppSelector } from "../../store/hooks";
+import { logout } from "../../store/features/auth/authSlice";
 import TopBar from "../../components/common/menu/TopBar";
 import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/SpotInfo";
 import SpotStatus from "../../components/new/SpotStatus";
 import SpotDone from "../../components/new/SpotDone";
-import { FormValuesType } from "../../types/FormValuesType";
+import { SpotFormValuesType } from "../../types/SpotFormValuesType";
 
 const LAST_STEP = 4;
 
@@ -16,7 +18,7 @@ function NewSpotPage() {
   const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState<FormValuesType>({
+  const [formValues, setFormValues] = useState<SpotFormValuesType>({
     name: "",
     addressDetail: "",
     reviewContent: "",
@@ -30,6 +32,7 @@ function NewSpotPage() {
     addressDepth2: "",
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleBackClick = () => {
     if (step === 1) {
@@ -65,37 +68,51 @@ function NewSpotPage() {
       ...prevValues,
       placeStatus: data,
     }));
-
-    setStep((prev) => prev + 1);
   };
 
-  const handleUpload = () => {
-    const formData = new FormData();
+  useEffect(() => {
+    if (formValues.placeStatus) {
+      const formData = new FormData();
 
-    for (const key in formValues) {
-      if (key === "images" && Array.isArray(formValues[key])) {
-        formValues[key].forEach((file) => {
-          formData.append(key, file);
-        });
-      } else {
-        formData.append(key, String(formValues[key]));
+      for (const key in formValues) {
+        if (key === "images" && Array.isArray(formValues[key])) {
+          formValues[key].forEach((file) => {
+            formData.append(key, file);
+          });
+        } else {
+          formData.append(key, String(formValues[key]));
+        }
       }
-    }
 
-    axios
-      .post(`/api/v1/place`, formData, {
-        headers: {
-          Authorization: `${userInfo?.token}`,
-        },
-      })
-      .then((res: any) => {
-        console.log(res);
-        // TODO: 마이 페이지 제보 화면으로 이동
-      })
-      .catch((error: any) => {
-        console.log(error);
-      });
-  };
+      axios
+        .post(`/api/v1/place`, formData, {
+          headers: {
+            Authorization: `${userInfo?.token}`,
+          },
+        })
+        .then((res: any) => {
+          setStep((prev) => prev + 1);
+        })
+        .catch((error: any) => {
+          console.log(error);
+          // TODO: 이미 등록된 장소는 장소 등록이 아닌 후기 남기기로 넘어가야 함
+          if (error?.response?.data.code === "PLA-002") {
+            alert("이미 등록된 장소입니다. 다시 선택해 주세요.");
+          }
+          // TODO: 에러 처리 로직 구현
+          if (
+            error?.response?.data.code === "AUT-001" ||
+            error?.response?.data.code === "AUT-002" ||
+            error?.response?.data.code === "AUT-003" ||
+            error?.response?.data.code === "USR-001"
+          ) {
+            alert("유효한 토큰이 아닙니다. 다시 로그인 해 주세요.");
+            navigate("/login");
+            dispatch(logout());
+          }
+        });
+    }
+  }, [formValues.placeStatus]);
 
   if (!userInfo) return null;
 
@@ -120,6 +137,7 @@ function NewSpotPage() {
             onNext={handleSpotInfoChange}
             name={formValues.name}
             address={formValues.addressDetail}
+            initialFormValues={formValues}
             type="spot"
           />
         )}
@@ -132,7 +150,7 @@ function NewSpotPage() {
         )}
         {step === LAST_STEP && (
           <SpotDone
-            onNext={handleUpload}
+            onNext={() => navigate("/mypage/review")}
             name={formValues.name}
             address={formValues.addressDetail}
             type="spot"

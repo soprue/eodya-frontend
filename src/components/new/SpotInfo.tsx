@@ -1,7 +1,8 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import exifr from "exifr";
 
+import { SpotFormValuesType } from "../../types/SpotFormValuesType";
 import photo from "../../assets/image/icon/photo.svg";
 import { ReactComponent as Close } from "../../assets/image/icon/close.svg";
 import Btn from "../common/btn/Btn";
@@ -11,12 +12,19 @@ interface SpotInfoProps {
   name: string;
   address: string;
   type: "spot" | "review";
+  initialFormValues: Partial<SpotFormValuesType>;
 }
 
 const MAX_LENGTH = 500;
 const MAX_IMAGE_COUNT = 2;
 
-function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
+function SpotInfo({
+  onNext,
+  name,
+  address,
+  type,
+  initialFormValues,
+}: SpotInfoProps) {
   const { register, watch, handleSubmit, setValue } = useForm();
   const contentInput = watch("contentInput", "");
 
@@ -46,11 +54,14 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
 
     try {
       if (imagesInput.length < MAX_IMAGE_COUNT) {
-        const { DateTimeOriginal } = await exifr.parse(file);
+        const data = await exifr.parse(file);
 
-        const dateTaken = DateTimeOriginal
-          ? DateTimeOriginal.toISOString().substring(0, 10)
-          : new Date().toISOString().substring(0, 10);
+        const dateTaken =
+          data === undefined
+            ? new Date().toISOString().substring(0, 10)
+            : data.DateTimeOriginal
+              ? data.DateTimeOriginal.toISOString().substring(0, 10)
+              : new Date().toISOString().substring(0, 10);
 
         setImageDates(dateTaken);
         setImagesInput([...imagesInput, file]);
@@ -92,6 +103,8 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
       }
     } catch (error) {
       console.error("Error reading image date: ", error);
+      // TODO: 에러 처리 로직 구현
+      alert("다른 이미지를 선택해 주세요.");
     }
   };
 
@@ -122,6 +135,18 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
 
     onNext(submissionData);
   };
+
+  useEffect(() => {
+    if (initialFormValues.reviewContent) {
+      setValue("contentInput", initialFormValues.reviewContent);
+    }
+    if (initialFormValues.images) {
+      setImagesInput(initialFormValues.images);
+    }
+    if (initialFormValues.reviewDate) {
+      setImageDates(initialFormValues.reviewDate);
+    }
+  }, [initialFormValues, setValue]);
 
   return (
     <form

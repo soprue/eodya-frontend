@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 
 import Input from "../../components/common/input/Input";
@@ -9,8 +10,11 @@ import { LocationBtn } from "../../components/main/Btn/LocationBtn";
 import { SpotSmall } from "../../components/main/SpotSmall";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
+import { logout } from "../../store/features/auth/authSlice";
 
 export default function Main() {
+  const dispatch = useDispatch();
+
   const [state, setState] = useState({
     // 지도의 초기 위치
     center: { lat: 33.450701, lng: 126.570667 },
@@ -41,6 +45,14 @@ export default function Main() {
         <div className="absolute top-[30px] z-50 w-full px-4">
           <Input type="text" placeholder="장소를 검색해 보세요" />
           <MainBookMarkBtn />
+
+          {/* 임시 로그아웃 버튼 */}
+          <button
+            onClick={() => dispatch(logout())}
+            className="m-2 bg-white p-2"
+          >
+            로그아웃
+          </button>
         </div>
 
         <Map
