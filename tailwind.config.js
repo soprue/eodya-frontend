@@ -10,6 +10,9 @@ module.exports = {
         pretendard: ["Pretendard"],
       },
       fontSize: {},
+      letterSpacing : {
+        custom : "-0.02em"
+      },
       colors: {
         primary: "#FF6060",
         gray: {

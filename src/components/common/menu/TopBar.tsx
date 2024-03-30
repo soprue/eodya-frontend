@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
 
-import prev from "../../../assets/image/icon/prev.svg";
+import {ReactComponent as Prev} from "../../../assets/image/icon/prev.svg";
 import { ReactComponent as Close } from "../../../assets/image/icon/close.svg";
 
 /* 
   기본적으로 prev 버튼을 생성하고
-  children 값을 넣어 원하는 디자인으로 수정할수 있게 했습니다.
+  children 값을 넣어 원하는 디자인으로 수정할 수 있게 했습니다.
 
   canClose: TopBar에 X 버튼 유무
   onBack: 뒤로가기 버튼 함수
@@ -13,28 +13,49 @@ import { ReactComponent as Close } from "../../../assets/image/icon/close.svg";
 
 export default function TopBar({
   className,
+  prevClassName,
   children,
+  hide,
   canClose,
   onBack,
 }: {
-  className?: React.ReactNode;
-  children?: React.ReactNode;
+  className?: React.ReactNode,
+  prevClassName?: React.ReactNode,
+  children?: React.ReactNode,
+  hide? : boolean;
   canClose?: boolean;
   onBack?: () => void;
 }) {
+
   const navigate = useNavigate();
+
+  const onPrev = ()=>{
+    navigate(-1);
+  }
+
+  const handleClick : React.MouseEventHandler<HTMLButtonElement> = (e)=>{
+    if(onClick){
+      onClick(e);
+    } else {
+      onPrev();
+    }
+  }
 
   return (
     <div
-      className={`relative z-10 h-14 bg-white ${className ? className : ""}`}
+      className={`relative z-10 h-14 ${className ? className : ""}`}
     >
+      {
+        !hide ?
       <button
         type="button"
         className="absolute left-4 top-1/2 -translate-y-1/2"
         onClick={onBack}
       >
-        <img src={prev} alt="뒤로 가기" />
+          <Prev fill="#424242" className={`${prevClassName}`}/>
       </button>
+        : null
+      }
       {children}
       {canClose && (
         <button

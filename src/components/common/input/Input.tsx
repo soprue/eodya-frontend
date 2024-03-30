@@ -19,7 +19,7 @@ export default function Input({
 }: React.InputHTMLAttributes<HTMLInputElement>) {
   return (
     <div
-      className={`${className ? className : ""} relative h-[46px] w-full overflow-hidden rounded-[10px]`}
+      className={`bg-white relative h-[46px] w-full overflow-hidden rounded-[10px] ${className ? className : ""}`}
     >
       <input
         className="h-full w-full min-w-0 bg-transparent px-5 text-base leading-4 tracking-[-0.02em] outline-none placeholder:text-gray-300"

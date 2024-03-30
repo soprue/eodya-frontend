@@ -2,9 +2,13 @@ import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { buildGetDefaultMiddleware } from '@reduxjs/toolkit/dist/getDefaultMiddleware';
-
-import { slice } from './features/test/state';
 import authSlice from './features/auth/authSlice';
+import mainMarker from "./features/main/marker/markerSlice";
+import spotViewReducer from "./features/main/spotView/slice";
+import spotInfoY from "./features/main/spotInfo/ySlice";
+import spotInfoOpen from "./features/main/spotInfo/InfoSlice";
+import tourOpen from "./features/main/tourList/openSlice";
+
 
 const persistConfig = {
   key: 'root',
@@ -13,8 +17,12 @@ const persistConfig = {
 };
 
 const rootReducer = combineReducers({
-  test: slice.reducer,
   auth: authSlice,
+  spotView : spotViewReducer,
+  spotInfoY,
+  spotInfoOpen,
+  tourOpen,
+  mainMarker,
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -1,12 +1,13 @@
 import { useEffect, useState, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
-
 import { RootState } from "./store/store";
+        
 import Layout from "./components/layout/Layout";
 import KakaoCallback from "./components/login/KakaoCallback";
 import PrivateRoute from "./components/login/PrivateRoute";
 import PublicRoute from "./components/login/PublicRoute";
+import Mypage from "./page/mypage/Mypage";
 // import SplashScreen from './components/layout/SplashScreen';
 
 import Main from "./page/main/Main";
@@ -61,6 +62,10 @@ function App() {
     >
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/" element={<Main />} />
+          <Route path="/new/review" element={<NewReviewPage />} />
+          <Route path="/new/spot" element={<NewSpotPage />} />
+          <Route path="/mypage" element={<Mypage />} />
           <Route index element={<Main />} />
 
           {/* Public Routes */}
