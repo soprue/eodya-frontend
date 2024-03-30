@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
 
 import Input from "../../components/common/input/Input";
@@ -7,6 +8,7 @@ import BlossomMarker from "../../components/common/marker/BlossomMarker";
 import { SpotView } from "../../components/main/SpotView";
 import { MainBookMarkBtn } from "../../components/main/Btn/MainBookMarkBtn";
 import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
+import { logout } from "../../store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 import BookMarker from "../../components/common/marker/BookMarker";
@@ -18,9 +20,7 @@ import { getMarker, getBookMarker } from "../../store/features/main/marker/marke
 import { SpotIntro } from "../../components/main/SpotIntro";
 
 export default function Main() {
-
   const dispatch = useAppDispatch();
-
   const [bookMark,setBookMark] = useState(false);
 
   // 마커 fetch
@@ -70,6 +70,14 @@ export default function Main() {
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
           <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark}/>
+
+          {/* 임시 로그아웃 버튼 */}
+          <button
+            onClick={() => dispatch(logout())}
+            className="m-2 bg-white p-2"
+          >
+            로그아웃
+          </button>
         </div>
 
         <Map
