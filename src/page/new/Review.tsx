@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
 
 import { useAppSelector } from "../../store/hooks";
+import { logout } from "../../store/features/auth/authSlice";
 import TopBar from "../../components/common/menu/TopBar";
 import SpotInfo from "../../components/new/SpotInfo";
 import SpotStatus from "../../components/new/SpotStatus";
@@ -26,6 +28,7 @@ function NewReviewPage() {
     images: [],
   });
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleBackClick = () => {
     if (step === 1) {
@@ -123,6 +126,16 @@ function NewReviewPage() {
         })
         .catch((error: any) => {
           console.log(error);
+          // TODO: 에러 처리 로직 구현
+          if (
+            error?.response?.data.code === "AUT-001" ||
+            error?.response?.data.code === "AUT-002" ||
+            error?.response?.data.code === "AUT-003"
+          ) {
+            alert("유효한 토큰이 아닙니다. 다시 로그인 해 주세요.");
+            navigate("/login");
+            dispatch(logout());
+          }
         });
     }
   }, [formValues.placeStatus]);

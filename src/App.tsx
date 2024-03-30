@@ -99,7 +99,6 @@ function App() {
             }
           />
 
-          {/* TODO: 404 페이지 */}
           <Route path="/*" element={<NotFound />} />
         </Route>
       </Routes>

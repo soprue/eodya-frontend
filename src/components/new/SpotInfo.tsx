@@ -56,9 +56,12 @@ function SpotInfo({
       if (imagesInput.length < MAX_IMAGE_COUNT) {
         const data = await exifr.parse(file);
 
-        const dateTaken = data.DateTimeOriginal
-          ? data.DateTimeOriginal.toISOString().substring(0, 10)
-          : new Date().toISOString().substring(0, 10);
+        const dateTaken =
+          data === undefined
+            ? new Date().toISOString().substring(0, 10)
+            : data.DateTimeOriginal
+              ? data.DateTimeOriginal.toISOString().substring(0, 10)
+              : new Date().toISOString().substring(0, 10);
 
         setImageDates(dateTaken);
         setImagesInput([...imagesInput, file]);
@@ -100,7 +103,8 @@ function SpotInfo({
       }
     } catch (error) {
       console.error("Error reading image date: ", error);
-      // TODO: 모달로 다른 사진 선택 유도 메시지 노출
+      // TODO: 에러 처리 로직 구현
+      alert("다른 이미지를 선택해 주세요.");
     }
   };
 
