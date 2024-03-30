@@ -1,9 +1,6 @@
 function Spinner() {
   return (
-    <div
-      role="status"
-      className="flex h-dvh w-full items-center justify-center"
-    >
+    <>
       <svg
         aria-hidden="true"
         className="inline h-8 w-8 animate-spin fill-primary text-gray-200 dark:text-gray-600"
@@ -21,7 +18,7 @@ function Spinner() {
         />
       </svg>
       <span className="sr-only">Loading...</span>
-    </div>
+    </>
   );
 }
 
