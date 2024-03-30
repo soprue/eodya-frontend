@@ -8,6 +8,7 @@ import spotViewReducer from "./features/main/spotView/slice";
 import spotInfoY from "./features/main/spotInfo/ySlice";
 import spotInfoOpen from "./features/main/spotInfo/InfoSlice";
 import tourOpen from "./features/main/tourList/openSlice";
+import InfoPlace from "./features/main/spotInfo/InfoPlace";
 
 
 const persistConfig = {
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   spotInfoOpen,
   tourOpen,
   mainMarker,
+  InfoPlace
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

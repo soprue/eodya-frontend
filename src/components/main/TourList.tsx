@@ -33,7 +33,7 @@ export function TourList(){
         </div>
 
         <div className="overflow-y-auto h-full scrollbar-hide">
-          {
+          {/* {
             [
               {
                 placeState : "만개",
@@ -54,7 +54,7 @@ export function TourList(){
             ].map((e,i)=>(
               <ListLayout item={e} key={i}/>
             ))
-          }
+          } */}
         </div>
 
       </div>

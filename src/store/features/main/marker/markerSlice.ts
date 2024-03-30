@@ -3,8 +3,9 @@ import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
 
 type MainMarker = {
-    lat : number,
-    lng : number
+    placeId: number;
+    x: number;
+    y: number;
 }
 
 interface initialStateType {
@@ -13,18 +14,25 @@ interface initialStateType {
     error : boolean;
 }
 
-export const getMarker = createAsyncThunk("get/marker",async()=>{
+export const getMarker = createAsyncThunk("get/marker",async(token : string)=>{
 
-    const response = await axios.get('http://localhost:3001/marker');
+    const response = await axios.get('/api/v1/place/all?tag=벚꽃',{
+        headers : {
+            Authorization : token
+        }
+    });
     const {data} = response;
-    console.log(data);
     return data;
 
 });
 
-export const getBookMarker = createAsyncThunk("get/bookmarker",async()=>{
+export const getBookMarker = createAsyncThunk("get/bookmarker",async(token : string)=>{
 
-    const response = await axios.get('http://localhost:3001/bookmarker');
+    const response = await axios.get('/api/v1/place/all?tag=벚꽃',{
+        headers : {
+            Authorization : token
+        }
+    });
     const {data} = response;
     console.log(data);
     return data;

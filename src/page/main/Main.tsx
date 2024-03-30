@@ -15,10 +15,12 @@ import { change as TourChange } from "../../store/features/main/tourList/openSli
 import { change as InfoChange  } from "../../store/features/main/spotInfo/InfoSlice";
 import { getMarker, getBookMarker } from "../../store/features/main/marker/markerSlice";
 import { SpotIntro } from "../../components/main/SpotIntro";
+import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
 
 export default function Main() {
 
   const dispatch = useAppDispatch();
+  const {userInfo} = useAppSelector(state=>state.auth);
 
   const [bookMark,setBookMark] = useState(false);
 
@@ -26,17 +28,20 @@ export default function Main() {
   const {loading, markers, error : markerError} = useAppSelector(state=>state.mainMarker);
   // 마커 가져오기
   useEffect(()=>{ 
+
+    if(!userInfo) return;
+
     if(bookMark){
-      dispatch(getBookMarker()); 
+      dispatch(getBookMarker(userInfo.token)); 
     }else{
-      dispatch(getMarker()); 
+      dispatch(getMarker(userInfo.token)); 
     }
   },[bookMark]);
 
   // 지도 초기위치 설정
   const [state, setState] = useState({
     // 지도의 초기 위치
-    center: { lat: 33.450701, lng: 126.570667 },
+    center: { lat: 13, lng: 14 },
     // 지도 위치 변경시 panto를 이용할지에 대해서 정의
     isPanto: false,
   });
@@ -57,7 +62,7 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  useEffect(()=>{ getPostion(); },[]);
+  // useEffect(()=>{ getPostion(); },[]);
 
   // 현재위치 watch
   const {location,error} = useWatchLocation();
@@ -108,29 +113,35 @@ export default function Main() {
 
           {/* 마커 */}
           {
-            markers.map((e)=>(
+            markers.map((e,i)=>(
               !bookMark ?
-              <BlossomMarker
-                key={`bloosom-${e.lat},${e.lng}`}
-                position={{ lat: e.lat, lng: e.lng }}
-                onClick={()=>{
-                  // 인포창은 나오게
-                  dispatch(yChange(0));
-                  dispatch(TourChange(false));
-                  dispatch(InfoChange(true));
-                }}
-              />
+                <BlossomMarker
+                  key={i+e.x+e.y}
+                  position={{ lat: e.x, lng: e.y }}
+                  onClick={()=>{
+                    if(!userInfo) return;
+                    // 인포창 나오게
+                    dispatch(yChange(0));
+                    dispatch(TourChange(false));
+                    dispatch(InfoChange(true));
+                    // info 데이터
+                    dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
+                  }}
+                />
               :
-              <BookMarker
-                key={`bookMark-${e.lat},${e.lng}`}
-                position={{ lat: e.lat, lng: e.lng }}
-                onClick={()=>{
-                  // 인포창은 나오게
-                  dispatch(yChange(0));
-                  dispatch(TourChange(false));
-                  dispatch(InfoChange(true));
-                }}
-              />
+                <BookMarker
+                  key={i+e.x+e.y}
+                  position={{ lat: e.x, lng: e.y }}
+                  onClick={()=>{
+                    if(!userInfo) return;
+                    // 인포창 나오게
+                    dispatch(yChange(0));
+                    dispatch(TourChange(false));
+                    dispatch(InfoChange(true));
+                    // info 데이터
+                    dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
+                  }}
+                />
             ))
           }
 
