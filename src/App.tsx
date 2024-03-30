@@ -75,7 +75,6 @@ function App() {
     >
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Main />} />
           <Route path="/new/review" element={<NewReviewPage />} />
           <Route path="/new/spot" element={<NewSpotPage />} />
           <Route path="/mypage" element={<Mypage />} />
