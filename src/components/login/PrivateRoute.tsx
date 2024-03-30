@@ -3,10 +3,14 @@ import { Navigate, Outlet } from 'react-router-dom';
 
 import { RootState } from '../../store/store';
 
-function PrivateRoute() {
+interface PrivateRouteProps {
+  children: React.ReactNode;
+}
+
+function PrivateRoute({ children }: PrivateRouteProps) {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
-  return isLoggedIn ? <Outlet /> : <Navigate to="/login" />;
+  return isLoggedIn ? <>{children}</> : <Navigate to="/login" />;
 }
 
 export default PrivateRoute;

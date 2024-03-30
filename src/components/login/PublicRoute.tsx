@@ -1,12 +1,16 @@
 import { useSelector } from 'react-redux';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 import { RootState } from '../../store/store';
 
-function PublicRoute() {
+interface PublicRouteProps {
+  children: React.ReactNode;
+}
+
+function PublicRoute({ children }: PublicRouteProps) {
   const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
 
-  return !isLoggedIn ? <Outlet /> : <Navigate to="/" />;
+  return !isLoggedIn ? <>{children}</> : <Navigate to="/" />;
 }
 
 export default PublicRoute;
