@@ -1,6 +1,4 @@
 import {
-  Dispatch,
-  SetStateAction,
   useCallback,
   useEffect,
   useState,
@@ -24,9 +22,9 @@ interface SpotMapProps {
 function SpotMap({ onNext, formValues }: SpotMapProps) {
   const [values, setValues] = useState({
     name: formValues.name,
-    address: formValues.address,
-    lat: formValues.lat,
-    lng: formValues.lng,
+    addressDetail: formValues.addressDetail,
+    x: formValues.x,
+    y: formValues.y,
     isPanto: false,
   });
   const [isOpen, setIsOpen] = useState<boolean>(false);
@@ -42,33 +40,33 @@ function SpotMap({ onNext, formValues }: SpotMapProps) {
 
     setValues((prevValues) => ({
       ...prevValues,
-      lat: center.lat,
-      lng: center.lng,
-      address: data.addressName,
+      y: center.lat,
+      x: center.lng,
+      addressDetail: data.addressName,
       name: data.placeName,
       isPanto: true,
     }));
   }, []);
 
   useEffect(() => {
-    if (formValues.lat !== 33.450701 || formValues.lng !== 126.570667) {
+    if (formValues.y !== 33.450701 || formValues.x !== 126.570667) {
       setValues((prevValues) => ({
         ...prevValues,
-        lat: formValues.lat,
-        lng: formValues.lng,
+        y: formValues.y,
+        x: formValues.x,
         isPanto: true,
       }));
     } else {
       getPostion();
     }
-  }, [formValues.lat, formValues.lng]);
+  }, [formValues.y, formValues.x]);
 
   // 마지막 위치에 대한 주소와 이름 정보를 조회하고 상태를 업데이트하는 함수
-  const updateAddressAndName = async (lat: number, lng: number) => {
-    const data = await fetchAddressAndName(lat, lng);
+  const updateAddressAndName = async (y: number, x: number) => {
+    const data = await fetchAddressAndName(y, x);
     setValues((prevValues) => ({
       ...prevValues,
-      address: data.addressName,
+      addressDetail: data.addressName,
       name: data.placeName,
       isPanto: true,
     }));
@@ -82,15 +80,15 @@ function SpotMap({ onNext, formValues }: SpotMapProps) {
 
   // 지도의 중심이 변경될 때마다 디바운스 함수를 호출하여 최종 위치에 대한 정보를 업데이트
   const handleCenterChanged = (map: any) => {
-    const lat = map.getCenter().getLat();
-    const lng = map.getCenter().getLng();
+    const y = map.getCenter().getLat();
+    const x = map.getCenter().getLng();
     setValues((prevValues) => ({
       ...prevValues,
-      lat,
-      lng,
+      y,
+      x,
       isPanto: true,
     }));
-    debouncedUpdateAddressAndName(lat, lng);
+    debouncedUpdateAddressAndName(y, x);
   };
 
   return (
@@ -98,13 +96,13 @@ function SpotMap({ onNext, formValues }: SpotMapProps) {
       <div className="h-full w-full">
         <div className="absolute left-0 top-0 h-full w-full">
           <Map
-            center={{ lat: values.lat, lng: values.lng }}
+            center={{ lat: values.y, lng: values.x }}
             isPanto={values.isPanto}
             className="h-full w-full"
             level={3}
             onCenterChanged={handleCenterChanged}
           >
-            <BasicMarker position={{ lat: values.lat, lng: values.lng }} />
+            <BasicMarker position={{ lat: values.y, lng: values.x }} />
           </Map>
 
           <div className="absolute bottom-[200px] z-10 w-full">

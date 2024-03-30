@@ -24,9 +24,12 @@ function SpotMore({ onNext, name, address }: SpotMoreProps) {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div>
-        <div className="border-b border-gray-200 py-6">
-          <p className="font-bold">{name}</p>
-          <span className="text-sm">{address}</span>
+        <div className="border-b border-gray-200 pt-3 h-[104px]">
+          <div className='mb-1'><p className="font-bold">{name}</p></div>
+          <div>
+            <span className="text-sm">{address}</span>
+            <span></span>
+          </div>
         </div>
 
         <div>

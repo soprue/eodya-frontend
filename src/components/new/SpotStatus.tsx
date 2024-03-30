@@ -1,6 +1,11 @@
 import { useState } from "react";
 
 import Btn from "../common/btn/Btn";
+import state_not_selected from "../../assets/image/icon/state_not_selected.svg"
+import state_not_selected_full from "../../assets/image/icon/state_not_selected_full.svg"
+import state_blooming from "../../assets/image/icon/state_blooming.svg"
+import state_full_bloom from "../../assets/image/icon/state_full_bloom.svg"
+import state_next_year from "../../assets/image/icon/state_next_year.svg"
 
 interface SpotStatusProps {
   onNext: (data: any) => void;
@@ -9,19 +14,22 @@ interface SpotStatusProps {
 }
 
 function SpotStatus({ onNext, name, address }: SpotStatusProps) {
-  const [status, setStatus] = useState<string | null>(null);
+  const [status, setStatus] = useState<"BLOOMING" | "FULL_BLOOM" | "NEXT_YEAR" | null>(null);
   const isAllValid = status != null;
 
-  const handleStatusChange = (value: string) => {
+  const handleStatusChange = (value: "BLOOMING" | "FULL_BLOOM" | "NEXT_YEAR") => {
     setStatus(value);
   };
 
   return (
     <div className="flex h-full flex-col justify-between p-4">
       <div>
-        <div className="border-b border-gray-200 py-6">
-          <p className="font-bold">{name}</p>
-          <span className="text-sm">{address}</span>
+        <div className="border-b border-gray-200 pt-3 h-[104px]">
+          <div className='mb-1'><p className="font-bold">{name}</p></div>
+          <div>
+            <span className="text-sm">{address}</span>
+            <span></span>
+          </div>
         </div>
 
         <div className="pt-[80px]">
@@ -39,30 +47,30 @@ function SpotStatus({ onNext, name, address }: SpotStatusProps) {
           <div className="mt-[60px] flex justify-center gap-10">
             <div
               className="flex cursor-pointer flex-col items-center justify-center gap-4"
-              onClick={() => handleStatusChange("개화")}
+              onClick={() => handleStatusChange("BLOOMING")}
             >
-              <div className="h-[74px] w-[74px] rounded-full bg-[#EBEBEB]">
-                <img src="" alt="개화" />
+              <div className="h-[74px] w-[74px] rounded-full flex justify-center items-center">
+                <img src={status === "BLOOMING" ? state_blooming : state_not_selected} alt="개화" />
               </div>
-              <p className="text-sm text-gray-200">개화</p>
+              <p className={`${status === "BLOOMING" && "text-primary font-bold"} text-sm text-gray-200`}>개화</p>
             </div>
             <div
-              className="flex cursor-pointer flex-col items-center justify-center gap-4"
-              onClick={() => handleStatusChange("만개")}
+              className="flex cursor-pointer flex-col items-center justify-center gap-4 w-[85px]"
+              onClick={() => handleStatusChange("FULL_BLOOM")}
             >
-              <div className="h-[74px] w-[74px] rounded-full bg-[#EBEBEB]">
-                <img src="" alt="만개" />
+            <div className="h-[74px] w-[74px] rounded-full flex justify-center items-center">
+                <img src={status === "FULL_BLOOM" ? state_full_bloom : state_not_selected_full} alt="만개" />
               </div>
-              <p className="text-sm text-gray-200">만개</p>
+              <p className={`${status === "FULL_BLOOM" && "text-primary font-bold"} text-sm text-gray-200`}>만개</p>
             </div>
             <div
-              className="flex cursor-pointer flex-col items-center justify-center gap-4"
-              onClick={() => handleStatusChange("내년에 만나요")}
+              className="flex cursor-pointer flex-col items-center justify-center gap-4 w-[85px]"
+              onClick={() => handleStatusChange("NEXT_YEAR")}
             >
-              <div className="h-[74px] w-[74px] rounded-full bg-[#EBEBEB]">
-                <img src="" alt="내년에 만나요" />
+            <div className="h-[74px] w-[74px] rounded-full flex justify-center items-center">
+                <img src={status === "NEXT_YEAR" ? state_next_year : state_not_selected} alt="내년에 만나요" />
               </div>
-              <p className="text-sm text-gray-200">내년에 만나요</p>
+              <p className={`${status === "NEXT_YEAR" && "text-gray-950 font-bold"} text-sm text-gray-200`}>내년에 만나요</p>
             </div>
           </div>
         </div>

@@ -1,17 +1,27 @@
 import Btn from "../common/btn/Btn";
+import bg from "../../assets/image/bg.svg";
 
 interface SpotDoneProps {
   onNext: (data: any) => void;
   name: string;
   address: string;
   type: "spot" | "review";
-  state?: string | null;
+  placeStatus?: "BLOOMING" | "FULL_BLOOM" | "NEXT_YEAR" | null;
 }
 
-function SpotDone({ onNext, name, address, type, state }: SpotDoneProps) {
+function SpotDone({ onNext, name, address, type, placeStatus }: SpotDoneProps) {
+  const state =
+    placeStatus === "BLOOMING"
+      ? "개화"
+      : placeStatus === "FULL_BLOOM"
+        ? "만개"
+        : "내년에 만나요";
+
   return (
-    <div className="flex h-full flex-col justify-between p-4">
-      <div className="flex h-[calc(100%-72px)] w-full flex-col items-center justify-center">
+    <div
+      className={`bg-pattern flex h-full w-full flex-col justify-between overflow-hidden bg-cover p-4`}
+    >
+      <div className="flex h-[calc(100%-72px)] w-full flex-col items-center justify-center ">
         <p className="text-xl font-semibold">
           {type === "spot" ? "새 스팟을 등록했어요!" : "후기를 등록했어요!"}
         </p>

@@ -13,12 +13,13 @@ function NewSpotPage() {
   const [step, setStep] = useState(1);
   const [formValues, setFormValues] = useState({
     name: "",
-    address: "",
-    lat: 33.450701,
-    lng: 126.570667,
-    comments: "",
+    addressDetail: "",
+    reviewContent: "",
+    placeStatus: null,
+    x: 126.570667,
+    y: 33.450701,
+    reviewDate: "",
     images: [],
-    status: "",
   });
   const navigate = useNavigate();
 
@@ -52,7 +53,7 @@ function NewSpotPage() {
   const handleSpotStatusChange = (data: any) => {
     setFormValues((prevValues) => ({
       ...prevValues,
-      status: data,
+      placeStatus: data,
     }));
 
     setStep((prev) => prev + 1);
@@ -83,7 +84,7 @@ function NewSpotPage() {
           <SpotInfo
             onNext={handleSpotInfoChange}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
             type="spot"
           />
         )}
@@ -91,14 +92,14 @@ function NewSpotPage() {
           <SpotStatus
             onNext={handleSpotStatusChange}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
           />
         )}
         {step === LAST_STEP && (
           <SpotDone
             onNext={handleUpload}
             name={formValues.name}
-            address={formValues.address}
+            address={formValues.addressDetail}
             type="spot"
           />
         )}

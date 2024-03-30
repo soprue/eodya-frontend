@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import exifr from "exifr";
 
 import photo from "../../assets/image/icon/photo.svg";
 import { ReactComponent as Close } from "../../assets/image/icon/close.svg";
@@ -17,12 +18,13 @@ const MAX_IMAGE_COUNT = 2;
 
 function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
   const { register, watch, handleSubmit, setValue } = useForm();
-  const commentsInput = watch("commentsInput", "");
+  const contentInput = watch("contentInput", "");
 
   const [imagesInput, setImagesInput] = useState<File[]>([]);
   const [selectedImage, setSelectedImage] = useState<number | null>();
+  const [imageDates, setImageDates] = useState<string | null>(null);
 
-  const isContentValid = commentsInput.trim().length > 0;
+  const isContentValid = contentInput.trim().length > 0;
   const isImageUploaded = imagesInput.length > 0;
   const isAllValid =
     type === "spot" ? isContentValid && isImageUploaded : isContentValid;
@@ -32,16 +34,30 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
   ) => {
     const { value } = event.target;
     if (value.length <= MAX_LENGTH) {
-      setValue("commentsInput", value);
+      setValue("contentInput", value);
     }
   };
 
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageUpload = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
     const file = event.target.files?.[0];
     if (!file) return;
 
-    if (imagesInput.length < MAX_IMAGE_COUNT) {
-      setImagesInput([...imagesInput, file]);
+    try {
+      const { DateTimeOriginal } = await exifr.parse(file);
+
+      const dateTaken = DateTimeOriginal
+        ? DateTimeOriginal.toISOString().substring(0, 10)
+        : new Date().toISOString().substring(0, 10);
+
+      setImageDates(dateTaken);
+
+      if (imagesInput.length < MAX_IMAGE_COUNT) {
+        setImagesInput([...imagesInput, file]);
+      }
+    } catch (error) {
+      console.error("Error reading image date: ", error);
     }
   };
 
@@ -67,8 +83,9 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
 
   const onSubmit = (data: any) => {
     const submissionData = {
-      comments: data.commentsInput,
-      images: data.imagesInput,
+      reviewContent: data.contentInput,
+      images: imagesInput,
+      reviewDate: imageDates,
     };
 
     onNext(submissionData);
@@ -81,21 +98,28 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
       onClick={() => setSelectedImage(null)}
     >
       <div>
-        <div className="border-b border-gray-200 py-6">
-          <p className="font-bold">{name}</p>
-          <span className="text-sm">{address}</span>
+        <div className="h-[104px] border-b border-gray-200 pt-3">
+          <div className="mb-1">
+            <p className="font-bold">{name}</p>
+          </div>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm">{address}</span>
+            <span className="text-[13px] font-semibold text-primary">
+              {imageDates && imageDates.replace(/-/g, ".") + " 방문"}
+            </span>
+          </div>
         </div>
 
         <div className="relative py-5">
           <textarea
-            {...register("commentsInput")}
+            {...register("contentInput")}
             onChange={handleContentChange}
             className="h-[200px] w-full resize-none rounded-[10px] bg-[#f6f6f6] p-3 focus:outline-none"
             placeholder="장소를 방문하며 좋았던 점을 적어 주세요"
             maxLength={MAX_LENGTH}
           ></textarea>
           <div className="absolute bottom-8 right-3 text-[13px] text-gray-500">
-            {commentsInput.length}/{MAX_LENGTH}
+            {contentInput.length}/{MAX_LENGTH}
           </div>
         </div>
 
