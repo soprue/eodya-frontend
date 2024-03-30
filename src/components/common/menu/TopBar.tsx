@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-import {ReactComponent as Prev} from "../../../assets/image/icon/prev.svg";
+import { ReactComponent as Prev } from "../../../assets/image/icon/prev.svg";
 import { ReactComponent as Close } from "../../../assets/image/icon/close.svg";
 
 /* 
@@ -19,43 +19,26 @@ export default function TopBar({
   canClose,
   onBack,
 }: {
-  className?: React.ReactNode,
-  prevClassName?: React.ReactNode,
-  children?: React.ReactNode,
-  hide? : boolean;
+  className?: React.ReactNode;
+  prevClassName?: React.ReactNode;
+  children?: React.ReactNode;
+  hide?: boolean;
   canClose?: boolean;
   onBack?: () => void;
 }) {
-
   const navigate = useNavigate();
 
-  const onPrev = ()=>{
-    navigate(-1);
-  }
-
-  const handleClick : React.MouseEventHandler<HTMLButtonElement> = (e)=>{
-    if(onClick){
-      onClick(e);
-    } else {
-      onPrev();
-    }
-  }
-
   return (
-    <div
-      className={`relative z-10 h-14 ${className ? className : ""}`}
-    >
-      {
-        !hide ?
-      <button
-        type="button"
-        className="absolute left-4 top-1/2 -translate-y-1/2"
-        onClick={onBack}
-      >
-          <Prev fill="#424242" className={`${prevClassName}`}/>
-      </button>
-        : null
-      }
+    <div className={`relative z-10 h-14 ${className ? className : ""}`}>
+      {!hide ? (
+        <button
+          type="button"
+          className="absolute left-4 top-1/2 -translate-y-1/2"
+          onClick={onBack}
+        >
+          <Prev fill="#424242" className={`${prevClassName}`} />
+        </button>
+      ) : null}
       {children}
       {canClose && (
         <button

@@ -2,17 +2,17 @@ import { useEffect, useState, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
-        
+
 import Layout from "./components/layout/Layout";
 import KakaoCallback from "./components/login/KakaoCallback";
 import PrivateRoute from "./components/login/PrivateRoute";
 import PublicRoute from "./components/login/PublicRoute";
-import Mypage from "./page/mypage/Mypage";
 // import SplashScreen from './components/layout/SplashScreen';
 
 import Main from "./page/main/Main";
 import LoginPage from "./page/login/Login";
 import Spinner from "./components/common/spinner/Spinner";
+const Mypage = lazy(() => import("./page/mypage/Mypage"));
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
 const NotFound = lazy(() => import("./page/404/NotFound"));
@@ -62,15 +62,11 @@ function App() {
     >
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/" element={<Main />} />
-          <Route path="/new/review" element={<NewReviewPage />} />
-          <Route path="/new/spot" element={<NewSpotPage />} />
-          <Route path="/mypage" element={<Mypage />} />
           <Route index element={<Main />} />
 
           {/* Public Routes */}
           <Route
-            path="login"
+            path="/login"
             element={
               <PublicRoute>
                 <LoginPage />
@@ -78,7 +74,7 @@ function App() {
             }
           />
           <Route
-            path="api/auth/callback/kakao"
+            path="/api/auth/callback/kakao"
             element={
               <PublicRoute>
                 <KakaoCallback />
@@ -88,7 +84,7 @@ function App() {
 
           {/* Private Routes */}
           <Route
-            path="new/review/:id"
+            path="/new/review/:id"
             element={
               <PrivateRoute>
                 <NewReviewPage />
@@ -96,10 +92,18 @@ function App() {
             }
           />
           <Route
-            path="new/spot"
+            path="/new/spot"
             element={
               <PrivateRoute>
                 <NewSpotPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mypage"
+            element={
+              <PrivateRoute>
+                <Mypage />
               </PrivateRoute>
             }
           />
