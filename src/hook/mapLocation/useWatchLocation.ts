@@ -1,4 +1,6 @@
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
+
+// 위치가 변동이 생기면 그 위치 값을 가져옵니다.
 
 const OPTION = { // https://developer.mozilla.org/en-US/docs/Web/API/Geolocation/getCurrentPosition#options 옵션은 여기서 확인 가능합니다
     enableHighAccuracy: true,  // true를 쓰면 정확도가 올라가고 // false을 쓰면 속도는 빠르지만 정확도는 낮아집니다.
