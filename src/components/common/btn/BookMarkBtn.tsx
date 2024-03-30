@@ -9,11 +9,13 @@ export const BookMarkBtn = ({numberHide,placeId} : {numberHide? : boolean,placeI
   const [bookState,setBookState] = useState(false);
 
     const onClick = async (e : React.MouseEvent<HTMLDListElement, MouseEvent>,placeId : string)=>{
-      const response = await axios.patch(`http://3.37.95.12:8080/api/v1/Bookmark/${placeId}`,{
-        headers : {},
-        params : {}
-      });
-      const {data} = response;
+      axios.patch(`/http://api/v1/bookmark/${placeId}`)
+      .then(()=>{
+
+      })
+      .catch(err=>{
+        console.log(err);
+      })
     }
   
     return (
