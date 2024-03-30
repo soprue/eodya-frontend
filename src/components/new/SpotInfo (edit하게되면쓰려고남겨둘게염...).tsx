@@ -96,7 +96,10 @@ function SpotInfo({
       <div>
         <div className="border-b border-gray-200 py-6">
           <p className="font-bold">{name}</p>
-          <span className="text-sm">{address}</span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm">{address}</span>
+            <span className="text-[13px] font-semibold text-primary"></span>
+          </div>
         </div>
 
         <div className="relative py-5">

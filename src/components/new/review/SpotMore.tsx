@@ -24,11 +24,13 @@ function SpotMore({ onNext, name, address }: SpotMoreProps) {
       onSubmit={handleSubmit(onSubmit)}
     >
       <div>
-        <div className="border-b border-gray-200 pt-3 h-[104px]">
-          <div className='mb-1'><p className="font-bold">{name}</p></div>
-          <div>
+        <div className="h-[104px] border-b border-gray-200 pt-3">
+          <div className="mb-1">
+            <p className="font-bold">{name}</p>
+          </div>
+          <div className="flex flex-col gap-0.5">
             <span className="text-sm">{address}</span>
-            <span></span>
+            <span className="text-[13px] font-semibold text-primary"></span>
           </div>
         </div>
 

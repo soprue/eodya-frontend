@@ -1,14 +1,10 @@
-import bg from '../../assets/image/bg.svg';
-import logo from '../../assets/image/logo.svg';
+import bg from "../../assets/image/bg.svg";
+import logo from "../../assets/image/logo.svg";
 
 function SplashScreen() {
   return (
-    <div className="mx-auto max-w-lg h-dvh relative bg-white overflow-hidden">
-      <img src={bg} alt="배경 이미지" className="w-full" />
-
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
-        <img src={logo} alt="로고" />
-      </div>
+    <div className="relative mx-auto flex h-dvh max-w-lg items-center justify-center overflow-hidden bg-white bg-pattern bg-cover">
+      <img src={logo} alt="로고" />
     </div>
   );
 }

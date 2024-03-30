@@ -1,6 +1,6 @@
-import { Link } from 'react-router-dom';
+import { Link } from "react-router-dom";
 
-import logo from '../../assets/image/logo.svg';
+import logo from "../../assets/image/logo.svg";
 
 function LoginPage() {
   const CLIENT_ID = `${process.env.REACT_APP_KAKAO_REST_API_KEY}`;
@@ -8,20 +8,20 @@ function LoginPage() {
   const kakaoURL = `https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=${CLIENT_ID}&redirect_uri=${REDIRECT_URI}&response_type=code`;
 
   return (
-    <main className="w-full h-dvh flex flex-col justify-center items-center gap-[60px] font-pretendard">
-      <div className="w-[276px] h-[276px] rounded-full bg-[#F0F0F0 flex justify-center items-center]">
+    <main className="flex h-dvh w-full flex-col items-center justify-center gap-[60px] font-pretendard">
+      <div className="bg-[#F0F0F0 items-center] flex h-[276px] w-[276px] justify-center rounded-full">
         <img src={logo} alt="로고" />
       </div>
 
-      <div className="max-w-[328px] w-full flex flex-col justify-center items-center gap-4">
+      <div className="flex w-full max-w-[328px] flex-col items-center justify-center gap-4">
         <button
-          className="w-full h-[46px] bg-[#FAE100] rounded-[10px] font-semibold text-sm"
+          className="h-[46px] w-full rounded-[10px] bg-[#FAE100] text-sm font-semibold"
           onClick={() => (window.location.href = kakaoURL)}
         >
           카카오로 로그인
         </button>
 
-        <Link to={'/'} className="font-semibold text-sm underline">
+        <Link to={"/"} className="text-sm font-semibold underline">
           로그인 없이 둘러보기
         </Link>
       </div>

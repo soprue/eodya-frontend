@@ -19,7 +19,7 @@ function SpotDone({ onNext, name, address, type, placeStatus }: SpotDoneProps) {
 
   return (
     <div
-      className={`bg-pattern flex h-full w-full flex-col justify-between overflow-hidden bg-cover p-4`}
+      className={`flex h-full w-full flex-col justify-between overflow-hidden bg-pattern bg-cover p-4`}
     >
       <div className="flex h-[calc(100%-72px)] w-full flex-col items-center justify-center ">
         <p className="text-xl font-semibold">
@@ -35,7 +35,10 @@ function SpotDone({ onNext, name, address, type, placeStatus }: SpotDoneProps) {
               </span>
             )}
           </div>
-          <span className="text-sm">{address}</span>
+          <div className="flex flex-col gap-0.5">
+            <span className="text-sm">{address}</span>
+            <span className="text-[13px] font-semibold text-primary"></span>
+          </div>
         </div>
       </div>
 

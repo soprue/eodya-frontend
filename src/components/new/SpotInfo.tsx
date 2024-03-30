@@ -65,18 +65,16 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
     index: number,
     event: React.MouseEvent<SVGElement, MouseEvent>,
   ) => {
-    event.stopPropagation(); // 이벤트 버블링 방지
-    setImagesInput(imagesInput.filter((_, i) => i !== index)); // 이미지 삭제
-    setSelectedImage(null); // 선택 상태 초기화
+    event.stopPropagation();
+    setImagesInput(imagesInput.filter((_, i) => i !== index));
+    setSelectedImage(null);
   };
 
   const handleImageClick = (index: number) => {
     if (selectedImage === index) {
-      // 이미 선택된 이미지를 다시 클릭하면 삭제
       setImagesInput(imagesInput.filter((_, i) => i !== index));
-      setSelectedImage(null); // 선택 상태 초기화
+      setSelectedImage(null);
     } else {
-      // 이미지 선택 상태 설정
       setSelectedImage(index);
     }
   };

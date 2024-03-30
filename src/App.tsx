@@ -3,7 +3,6 @@ import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { RootState } from "./store/store";
-import { useAppSelector } from "./store/hooks";
 import Layout from "./components/layout/Layout";
 import KakaoCallback from "./components/login/KakaoCallback";
 import PrivateRoute from "./components/login/PrivateRoute";
