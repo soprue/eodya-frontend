@@ -29,12 +29,10 @@ export interface ReviewDetailList {
 // 스팟상세
 export const SpotView = () => {
   const [bookmark, setBookmark] = useState(false);
-
   const dispatch = useAppDispatch();
   const {userInfo} = useAppSelector(state=>state.auth);
   const viewShow = useAppSelector(state=>state.spotView);
   const {info} = useAppSelector(start=>start.InfoPlace);
-  const [bookmark,setBookmark] = useState(false);
   const [review,setReview] = useState<ReviewInterface>();
 
   useEffect(()=>{

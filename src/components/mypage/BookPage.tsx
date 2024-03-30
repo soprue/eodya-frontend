@@ -20,7 +20,7 @@ export default function BookPage({item,index}:{item :Bookmark,index : number}) {
             <dd className='text-sm font-normal mt-[6px] leading-[21px] text-gray-700'>{item.addressDetail}</dd>
         </dl>
         <div className="absolute right-0 top-0">
-            <BookMarkBtn placeId={item.placeId}/>
+            <BookMarkBtn placeId={item.placeId.toString()} status={false} />
         </div>
       </div>
     </GridLayout>

@@ -92,9 +92,6 @@ export default function Main() {
   return (
     <>
       <main className="relative h-screen overflow-hidden">
-        <div className="absolute top-[30px] z-50 w-full px-4">
-          <Input type="text" placeholder="장소를 검색해 보세요" />
-          <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark} />
 
         {/* 검색버튼 */}
         <div className="absolute z-50 w-full top-[30px] px-4">

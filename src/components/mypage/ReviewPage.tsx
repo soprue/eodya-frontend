@@ -1,25 +1,24 @@
-import React from 'react'
 import { GridLayout } from './GridLayout'
 import FlowerTag from '../common/tag/FlowerTag'
 import { Image } from './Image'
 import { ReactComponent as HorizSVG} from "../../assets/image/icon/horiz.svg";
+import { Review } from '../../page/mypage/Review';
 
-export default function ReviewPage({index,setIsOpen}: {index : number,setIsOpen : any}) {
+export default function ReviewPage({item,index,setIsOpen}: {item: Review,index : number,setIsOpen : any}) {
   return (
     <GridLayout index={index}>
-        <p className='text-gray-300 text-[13px] tracking-custom leading-none '>2024.04.18</p>
+        <p className='text-gray-300 text-[13px] tracking-custom leading-none '>{item.reviewDate}</p>
         <div className='flex relative mt-2'>
         <div className='w-[80px] relative flex-none'>
             <div className='absolute top-0 left-0 z-10 leading-none mt-[10px] ml-[10px]'>
-            <FlowerTag placeState='개화'/>
+            <FlowerTag placeState={item.placeStatus}/>
             </div>
-            <Image/>
+            <Image src={item.image}/>
         </div>
         <dl className='ml-3 tracking-custom pr-5'>
-            <dt className='text-base text-gray-950 font-bold leading-4'>애기능 동산</dt>
+            <dt className='text-base text-gray-950 font-bold leading-4'>{item.name}</dt>
             <dd className='text-sm leading-[21px] font-normal text-gray-900 mt-[6px]'>
-            대통령은 국무회의의 의장이 되고, 국무총리는 부의장이 된다.
-            새로운 회계연도가 개시될 때까지 예산안이 의결
+            {item.reviewContent}
             </dd>
         </dl>
         </div>
