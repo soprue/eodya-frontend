@@ -11,7 +11,7 @@ import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 import BookMarker from "../../components/common/marker/BookMarker";
 import UserMarker from "../../components/common/marker/UserMarker";
 import { change as yChange  } from "../../store/features/main/spotInfo/ySlice";
-import { change as tourChange } from "../../store/features/main/tourList/openSlice";
+import { change as TourChange } from "../../store/features/main/tourList/openSlice";
 import { change as InfoChange  } from "../../store/features/main/spotInfo/InfoSlice";
 import { getMarker, getBookMarker } from "../../store/features/main/marker/markerSlice";
 import { SpotIntro } from "../../components/main/SpotIntro";
@@ -80,7 +80,7 @@ export default function Main() {
             // spotY = 100
             dispatch(yChange(100));
             setTimeout(()=>{
-              dispatch(tourChange(false));
+              dispatch(TourChange(false));
               dispatch(InfoChange(false));
             },300);
           }}
@@ -116,8 +116,9 @@ export default function Main() {
                 position={{ lat: e.lat, lng: e.lng }}
                 onClick={()=>{
                   // 인포창은 나오게
-                  dispatch(InfoChange(true));
                   dispatch(yChange(0));
+                  dispatch(TourChange(false));
+                  dispatch(InfoChange(true));
                 }}
               />
               :
@@ -126,8 +127,9 @@ export default function Main() {
                 position={{ lat: e.lat, lng: e.lng }}
                 onClick={()=>{
                   // 인포창은 나오게
-                  dispatch(InfoChange(true));
                   dispatch(yChange(0));
+                  dispatch(TourChange(false));
+                  dispatch(InfoChange(true));
                 }}
               />
             ))
