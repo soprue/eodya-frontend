@@ -75,10 +75,9 @@ export default function Main() {
           center={state.center}
           isPanto={state.isPanto}
           style={{ width: "100%", height : "100%" }}
-          level={14}
+          level={5}
           onDragStart={()=>{
-            // spotY = 100
-            dispatch(yChange(100));
+            dispatch(yChange(100)); // spotY = 100
             setTimeout(()=>{
               dispatch(TourChange(false));
               dispatch(InfoChange(false));
