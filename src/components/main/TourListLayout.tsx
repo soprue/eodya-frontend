@@ -29,7 +29,7 @@ export const TourListLayout = ({item,onClick} : {item : PlaceDetail,onClick? : R
           </dl>
           {/* <p className="text-[13px] mt-1 leading-[13px] text-info-300 font-semibold">820m</p> */}
         </div>
-        <BookMarkBtn placeId={item.placeId.toString()}/>
+        <BookMarkBtn placeId={String(item.placeId)} status={false}/>
       </div>
 
     </div>
