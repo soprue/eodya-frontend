@@ -7,7 +7,7 @@ import { LocationBtn } from "./Btn/LocationBtn";
 import { TourList } from "./TourList";
 import { MarkerInfo } from "./MarkerInfo";
 
-export function SpotIntro({getPostion} : {getPostion : any}){
+export function SpotIntro({getPostion,getTourList} : {getPostion : any,getTourList : any}){
 
     const dispatch = useAppDispatch();
   
@@ -151,6 +151,7 @@ export function SpotIntro({getPostion} : {getPostion : any}){
       setTimeout(()=>{ // 0.5초후에 근처의 명소 보이게
         dispatch(TourChange(true));
       },500)
+      getTourList();
     }
   
     return (
