@@ -1,4 +1,3 @@
-import Mypage from "./page/mypage/Mypage";
 import { useEffect, useState, Suspense, lazy } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
@@ -11,6 +10,10 @@ import PublicRoute from './components/login/PublicRoute';
 
 import Main from './page/main/Main';
 import LoginPage from './page/login/Login';
+import BookMark from "./page/mypage/BookMark";
+import Review from "./page/mypage/Review";
+
+import { Reivew } from "./components/main/Reivew";
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
 
@@ -77,7 +80,10 @@ function App() {
         <Route element={<Layout />}>
           <Route path="/new/review" element={<NewReviewPage />} />
           <Route path="/new/spot" element={<NewSpotPage />} />
-          <Route path="/mypage" element={<Mypage />} />
+          <Route path="/mypage">
+            <Route index element={<BookMark />}/>
+            <Route path="review" element={<Review />}/>
+          </Route>
           <Route index element={<Main />} />
 
           {/* Public Routes */}
