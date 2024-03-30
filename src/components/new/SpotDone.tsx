@@ -1,5 +1,4 @@
 import Btn from "../common/btn/Btn";
-import bg from "../../assets/image/bg.svg";
 
 interface SpotDoneProps {
   onNext: (data: any) => void;

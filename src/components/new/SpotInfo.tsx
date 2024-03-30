@@ -45,16 +45,50 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
     if (!file) return;
 
     try {
-      const { DateTimeOriginal } = await exifr.parse(file);
-
-      const dateTaken = DateTimeOriginal
-        ? DateTimeOriginal.toISOString().substring(0, 10)
-        : new Date().toISOString().substring(0, 10);
-
-      setImageDates(dateTaken);
-
       if (imagesInput.length < MAX_IMAGE_COUNT) {
+        const { DateTimeOriginal } = await exifr.parse(file);
+
+        const dateTaken = DateTimeOriginal
+          ? DateTimeOriginal.toISOString().substring(0, 10)
+          : new Date().toISOString().substring(0, 10);
+
+        setImageDates(dateTaken);
         setImagesInput([...imagesInput, file]);
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          if (!e.target || !e.target.result) {
+            console.error("FileReader에서 이미지를 로드하는 데 실패했습니다.");
+            return;
+          }
+
+          const img = new Image();
+          img.src = e.target.result as string;
+
+          img.onload = () => {
+            const canvas = document.createElement("canvas");
+            const ctx = canvas.getContext("2d");
+            canvas.width = img.width;
+            canvas.height = img.height;
+            if (!ctx) {
+              console.error(
+                "Canvas에서 2D 컨텍스트를 가져오는 데 실패했습니다.",
+              );
+              return;
+            }
+            ctx.drawImage(img, 0, 0);
+
+            canvas.toBlob((blob) => {
+              if (!blob) return;
+              const webpImage = new File([blob], "converted_image.webp", {
+                type: "image/webp",
+              });
+
+              setImagesInput([...imagesInput, webpImage]);
+            }, "image/webp");
+          };
+        };
+        reader.readAsDataURL(file);
       }
     } catch (error) {
       console.error("Error reading image date: ", error);
@@ -133,7 +167,7 @@ function SpotInfo({ onNext, name, address, type }: SpotInfoProps) {
               type="file"
               id="image"
               className="hidden"
-              accept="image/*"
+              accept="image/jpeg,image/png,image/webp"
               onChange={handleImageUpload}
             />
 

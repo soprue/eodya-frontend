@@ -1,4 +1,3 @@
-import bg from "../../assets/image/bg.svg";
 import logo from "../../assets/image/logo.svg";
 
 function SplashScreen() {

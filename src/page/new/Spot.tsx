@@ -8,14 +8,15 @@ import SpotMap from "../../components/new/spot/SpotMap";
 import SpotInfo from "../../components/new/SpotInfo";
 import SpotStatus from "../../components/new/SpotStatus";
 import SpotDone from "../../components/new/SpotDone";
+import { FormValuesType } from "../../types/FormValuesType";
 
 const LAST_STEP = 4;
 
 function NewSpotPage() {
-  // const userInfo = useAppSelector((state) => state.auth.userInfo);
+  const userInfo = useAppSelector((state) => state.auth.userInfo);
 
   const [step, setStep] = useState(1);
-  const [formValues, setFormValues] = useState({
+  const [formValues, setFormValues] = useState<FormValuesType>({
     name: "",
     addressDetail: "",
     reviewContent: "",
@@ -24,6 +25,9 @@ function NewSpotPage() {
     y: 33.450701,
     reviewDate: "",
     images: [],
+    tag: "벚꽃",
+    addressDepth1: "",
+    addressDepth2: "",
   });
   const navigate = useNavigate();
 
@@ -66,23 +70,34 @@ function NewSpotPage() {
   };
 
   const handleUpload = () => {
-    // TODO: 마이 페이지 제보 화면으로 이동
-    console.log(formValues);
+    const formData = new FormData();
 
-    // axios
-    //   .post(`/api/v1/place`, formValues, {
-    //     headers: {
-    //       "Content-type": "multipart/form-data",
-    //       Authorization: `Bearer ${access_token}`,
-    //     },
-    //   })
-    //   .then((res: any) => {
-    //     console.log(res);
-    //   })
-    //   .catch((error: any) => {
-    //     console.log(error);
-    //   });
+    for (const key in formValues) {
+      if (key === "images" && Array.isArray(formValues[key])) {
+        formValues[key].forEach((file) => {
+          formData.append(key, file);
+        });
+      } else {
+        formData.append(key, String(formValues[key]));
+      }
+    }
+
+    axios
+      .post(`/api/v1/place`, formData, {
+        headers: {
+          Authorization: `${userInfo?.token}`,
+        },
+      })
+      .then((res: any) => {
+        console.log(res);
+        // TODO: 마이 페이지 제보 화면으로 이동
+      })
+      .catch((error: any) => {
+        console.log(error);
+      });
   };
+
+  if (!userInfo) return null;
 
   return (
     <main className="h-dvh w-full">

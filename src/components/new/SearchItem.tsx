@@ -1,13 +1,11 @@
 interface SearchItemProps {
-  key: number | string;
   data: any;
   handleSelectSpot: (e: React.MouseEvent<HTMLLIElement>) => void;
 }
 
-function SearchItem({ key, data, handleSelectSpot }: SearchItemProps) {
+function SearchItem({ data, handleSelectSpot }: SearchItemProps) {
   return (
     <li
-      key={key}
       className="flex cursor-pointer items-center justify-between py-5"
       data-lat={data.y}
       data-lng={data.x}
@@ -30,7 +28,6 @@ function SearchItem({ key, data, handleSelectSpot }: SearchItemProps) {
           className="box-border flex h-8 w-[87px] items-center rounded-full bg-primary px-4 py-2.5 text-xs text-white"
           onClick={(e) => {
             e.stopPropagation();
-            console.log(1);
           }}
         >
           후기 남기기
