@@ -1,4 +1,4 @@
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 import RankModal from "./Modal/RankModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -47,7 +47,10 @@ export function TourList(){
   // const [place, setPlace] = useState<any[]>([]); // 테스트용
   const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
-  const loadMore = useCallback(()=>{
+  /* const loadMore = useCallback(()=>{
+
+    // console.log(1);
+
     axios(`/api/v1/user/my/bookmarks?page=${page}&size=10`,{
       headers : {
         Authorization : userInfo?.token
@@ -69,7 +72,30 @@ export function TourList(){
         console.error('Error fetching data:', error);
     });
 
-  },[]);
+  },[]); */
+
+  useEffect(()=>{
+    axios.post(`/api/v1/place/search?page=${page}&size=10`,{address : "서울"},{
+      headers : {
+        Authorization : userInfo?.token
+      }
+    })
+      .then(({data} : {data : RootInterface})=>{
+
+        if(data.hasNext){
+          setHasNext(data.hasNext);
+          setPlace((prev)=>[...prev,...data.placeDetails]);
+          setPage(page+1);
+        }else{
+          return;
+        }
+
+      })
+      .catch(error => {
+        setHasNext(false);
+        console.error('Error fetching data:', error);
+    });
+  },[])
 
   const spotViewOpen=(e : PlaceDetail)=>{
     if(!userInfo) return;
@@ -104,18 +130,19 @@ export function TourList(){
           </button>
         </div>
 
-        <div className="overflow-y-auto h-full scrollbar-hide">
-          <InfiniteScroll
+        <div className="overflow-y-auto min-h-[800px] scrollbar-hide">
+          {
+            place.map((e,i)=><TourListLayout onClick={()=>spotViewOpen(e)} item={e} key={i} />)
+          }
+          {/* <InfiniteScroll
             pageStart={1}
             loadMore={loadMore}
             hasMore={hasNext}
             loader={<div className='text-center' key={0}>로딩중입니다...</div>}
             useWindow={false}
           >
-            {
-              place.map((e,i)=><TourListLayout onClick={()=>spotViewOpen(e)} item={e} key={i} />)
-            }
-          </InfiniteScroll>
+            
+          </InfiniteScroll> */}
         </div>
       </div>
 

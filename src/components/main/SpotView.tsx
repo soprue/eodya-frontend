@@ -54,6 +54,7 @@ export const SpotView = () => {
 
       })
       .catch(error => {
+        setHasNext(false);
         console.error('Error fetching data:', error);
     });
 
