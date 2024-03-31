@@ -3,6 +3,7 @@ import { ReviewDetailList } from "./SpotView";
 // import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 
 export const Reivew = ({item,index} : {item : ReviewDetailList,index : number})=>{
+    const [click,setClick] = useState(false);
   
   return (
     <div className={`${index !== 0 ? "mt-5 pt-5 border-t border-t-gray-100" : ""}  tracking-custom font-pretendard`}>

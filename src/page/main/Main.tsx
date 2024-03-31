@@ -1,5 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
 import { Map} from "react-kakao-maps-sdk";
+import { useDispatch } from "react-redux";
+import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
+
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
@@ -20,6 +23,9 @@ import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 import { hide } from "../../store/features/main/map/tourClick";
 import { spotHide, spotShow } from "../../store/features/main/map/spotClick";
+import { SpotIntro } from "../../components/main/SpotIntro";
+import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
+import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 export default function Main() {
   const dispatch = useAppDispatch();

@@ -42,9 +42,7 @@ createAsyncThunk(
     });
 
     const {data} = response;
-    
     return data;
-
 });
 
 const tourPlace = createSlice({
