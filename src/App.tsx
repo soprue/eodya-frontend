@@ -1,25 +1,127 @@
-import { Route, Routes } from 'react-router-dom';
-import logo from './logo.svg';
-import { useAppSelector } from './store/hooks';
+// import SplashScreen from './components/layout/SplashScreen';
+import { useEffect, Suspense, lazy } from "react";
+import { Route, Routes, useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { RootState } from "./store/store";
+
+import Layout from "./components/layout/Layout";
+import KakaoCallback from "./components/login/KakaoCallback";
+import PrivateRoute from "./components/login/PrivateRoute";
+import PublicRoute from "./components/login/PublicRoute";
+// import SplashScreen from './components/layout/SplashScreen';
+
+import Main from "./page/main/Main";
+import LoginPage from "./page/login/Login";
+import Spinner from "./components/common/spinner/Spinner";
+const Mypage = lazy(() => import("./page/mypage/BookMark"));
+const Review = lazy(() => import("./page/mypage/Review"));
+const NewReviewPage = lazy(() => import("./page/new/Review"));
+const NewSpotPage = lazy(() => import("./page/new/Spot"));
+const NotFound = lazy(() => import("./page/404/NotFound"));
 
 function App() {
+  // const [loading, setLoading] = useState(false);
+  const isLoggedIn = useSelector((state: RootState) => state.auth.isLoggedIn);
+  const navigate = useNavigate();
 
-  //테스트용으로 redux 넣어놨습니당
-  const test = useAppSelector((state)=>state.test.value);
+  useEffect(() => {
+    const initialization = sessionStorage.getItem("initialization");
+
+    if (!initialization) {
+      // setLoading(true);
+      sessionStorage.setItem("initialization", "true");
+
+      // const timer = setTimeout(() => {
+      //   setLoading(false);
+      // }, 1500);
+      // // return () => clearTimeout(timer);
+
+      const checkLogin = () => {
+        const path = window.location.pathname;
+        if (!isLoggedIn && path === "/") {
+          navigate("/login");
+        }
+      };
+
+      checkLogin();
+    }
+  }, []);
+
+  // if (loading) {
+  //   return <SplashScreen />;
+  // }
 
   return (
-    <Routes>
-      <Route path='/' 
-        element={
-          <>
-            <div className="App text-center h-screen flex items-center justify-center flex-col">
-              <img className='mx-auto' src={logo} alt="" width={200} /><br/>
-              <p className='font-bold'>{test} 합시당!</p>
-            </div>
-          </>
-        } 
-      />
-    </Routes>
+    <Suspense
+      fallback={
+        <div
+          role="status"
+          className="flex h-dvh w-full items-center justify-center"
+        >
+          <Spinner />
+        </div>
+      }
+    >
+      <Routes>
+        <Route element={<Layout />}>
+          <Route index element={<Main />} />
+
+          {/* Public Routes */}
+          <Route
+            path="/login"
+            element={
+              <PublicRoute>
+                <LoginPage />
+              </PublicRoute>
+            }
+          />
+          <Route
+            path="/api/auth/callback/kakao"
+            element={
+              <PublicRoute>
+                <KakaoCallback />
+              </PublicRoute>
+            }
+          />
+
+          {/* Private Routes */}
+          <Route
+            path="/new/review/:id"
+            element={
+              <PrivateRoute>
+                <NewReviewPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/new/spot"
+            element={
+              <PrivateRoute>
+                <NewSpotPage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mypage"
+            element={
+              <PrivateRoute>
+                <Mypage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mypage/review"
+            element={
+              <PrivateRoute>
+                <Review />
+              </PrivateRoute>
+            }
+          />
+
+          <Route path="/*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </Suspense>
   );
 }
 
