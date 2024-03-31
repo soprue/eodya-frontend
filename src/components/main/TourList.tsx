@@ -1,9 +1,7 @@
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { ReactComponent as More} from "../../assets/image/icon/more.svg";
 import RankModal from "./Modal/RankModal";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
-import axios from "axios";
-import InfiniteScroll from "react-infinite-scroller";
 import { TourListLayout } from "./TourListLayout";
 import TopBar from "../common/menu/TopBar";
 import { prevClick, upClick } from "../../store/features/main/map/tourClick";
@@ -56,57 +54,6 @@ export function TourList(){
 
   },[page])
 
-  const loadMore = useCallback(()=>{
-
-    console.log('가져옴');
-    console.log(hasNext);
-
-    /* axios(`/api/v1/user/my/bookmarks?page=${page}&size=10`,{
-      headers : {
-        Authorization : userInfo?.token
-      }
-    })
-      .then(({data} : {data : RootInterface})=>{
-
-        if(data.hasNext){
-          setHasNext(data.hasNext);
-          setPlace((prev)=>[...prev,...data.placeDetails]);
-          setPage(page+1);
-        }else{
-          return;
-        }
-
-      })
-      .catch(error => {
-        setHasNext(false);
-        console.error('Error fetching data:', error);
-    });
- */
-  },[]);
-
-/*   useEffect(()=>{
-    axios.post(`/api/v1/place/search?page=${page}&size=10`,{address : "서울"},{
-      headers : {
-        Authorization : userInfo?.token
-      }
-    })
-      .then(({data} : {data : RootInterface})=>{
-
-        if(data.hasNext){
-          setHasNext(data.hasNext);
-          setPlace((prev)=>[...prev,...data.placeDetails]);
-          setPage(page+1);
-        }else{
-          return;
-        }
-
-      })
-      .catch(error => {
-        setHasNext(false);
-        console.error('Error fetching data:', error);
-    });
-  },[]) */
-
   const spotViewOpen=(e : PlaceDetail)=>{
     if(!userInfo) return;
     dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
@@ -144,15 +91,6 @@ export function TourList(){
           {
             place.map((e,i)=><TourListLayout onClick={()=>spotViewOpen(e)} item={e} key={i} />)
           }
-{/*           <InfiniteScroll
-            pageStart={1}
-            loadMore={loadMore}
-            hasMore={hasNext}
-            loader={<div className='text-center' key={0}>로딩중입니다...</div>}
-            useWindow={false}
-          >
-            aaaa
-          </InfiniteScroll> */}
         </div>
       </div>
 

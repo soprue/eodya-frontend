@@ -39,26 +39,28 @@ export const SpotView = () => {
 
   useEffect(()=>{
     
-    axios(`/api/v1/review?placeId=${info.placeId}&page=1&size=10`,{
-      headers : {
-        Authorization : userInfo?.token,
-        "Content-Type" : "application/json"
-      }
-    })
-      .then(({data} : {data : ReviewInterface})=>{
+    if(info.placeId !== 0){
 
-        console.log(data);
-
-        setReviewTotalCount(data.reviewTotalCount);
-
-        setHasNext(data.hasNext);
-        setReview((prev)=>[...prev,...data.reviewDetailList]);
-
+      axios(`/api/v1/review?placeId=${info.placeId}&page=1&size=10`,{
+        headers : {
+          Authorization : userInfo?.token,
+          "Content-Type" : "application/json"
+        }
       })
-      .catch(error => {
-        setHasNext(false);
-        console.error('Error fetching data:', error);
-    });
+        .then(({data} : {data : ReviewInterface})=>{
+  
+          setReviewTotalCount(data.reviewTotalCount);
+  
+          setHasNext(data.hasNext);
+          setReview((prev)=>[...prev,...data.reviewDetailList]);
+  
+        })
+        .catch(error => {
+          setHasNext(false);
+          console.error('Error fetching data:', error);
+      });
+
+    }
 
   },[info])
 

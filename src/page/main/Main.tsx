@@ -66,22 +66,7 @@ export default function Main() {
 
     if(!userInfo) return;
 
-    const geocoder = new kakao.maps.services.Geocoder();
-
-    geocoder.coord2Address(state.center.lng,state.center.lat, (result,status)=>{
-      if(status === kakao.maps.services.Status.OK){
-        dispatch(
-          getTourPlace({
-            token : userInfo.token, 
-            address : result[0].address.region_1depth_name,
-            page : 1 
-          })
-        );
-      }else{
-        dispatch(TourChange(false));
-      }
-
-    })
+    
 
   }
 
