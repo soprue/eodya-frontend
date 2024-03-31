@@ -58,7 +58,7 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  // useEffect(()=>{ getPostion(); getTourList(); },[]); 주석풀기
+  useEffect(()=>{ getPostion(); },[]);
 
   // 현재 위치를 토대로 근처의 명소 가져오기
   const getTourList = () => {
