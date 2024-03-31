@@ -6,8 +6,6 @@ import { start } from "repl";
 
 import TopBar from "../common/menu/TopBar";
 import { Reivew } from "./Reivew";
-import { ReactComponent as BookmarkOutline} from "../../assets/image/icon/bookmark_outline.svg";
-import { ReactComponent as Bookmark} from "../../assets/image/icon/bookmark.svg";
 import FlowerTag from "../common/tag/FlowerTag";
 import ShareBtn from "../common/btn/Share/ShareBtn";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -29,7 +27,6 @@ export interface ReviewDetailList {
 }
 
 export const SpotView = () => {
-  const [bookmark, setBookmark] = useState(false);
   const dispatch = useAppDispatch();
   const {userInfo} = useAppSelector(state=>state.auth);
   const viewShow = useAppSelector(state=>state.spotView);
@@ -42,26 +39,28 @@ export const SpotView = () => {
 
   useEffect(()=>{
     
-    axios(`/api/v1/review?placeId=${info.placeId}&page=1&size=10`,{
-      headers : {
-        Authorization : userInfo?.token,
-        "Content-Type" : "application/json"
-      }
-    })
-      .then(({data} : {data : ReviewInterface})=>{
+    if(info.placeId !== 0){
 
-        console.log(data);
-
-        setReviewTotalCount(data.reviewTotalCount);
-
-        setHasNext(data.hasNext);
-        setReview((prev)=>[...prev,...data.reviewDetailList]);
-
+      axios(`/api/v1/review?placeId=${info.placeId}&page=1&size=10`,{
+        headers : {
+          Authorization : userInfo?.token,
+          "Content-Type" : "application/json"
+        }
       })
-      .catch(error => {
-        setHasNext(false);
-        console.error('Error fetching data:', error);
-    });
+        .then(({data} : {data : ReviewInterface})=>{
+  
+          setReviewTotalCount(data.reviewTotalCount);
+  
+          setHasNext(data.hasNext);
+          setReview((prev)=>[...prev,...data.reviewDetailList]);
+  
+        })
+        .catch(error => {
+          setHasNext(false);
+          console.error('Error fetching data:', error);
+      });
+
+    }
 
   },[info])
 

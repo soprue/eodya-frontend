@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from "react";
+import { Map } from "react-kakao-maps-sdk";
 import { useDispatch } from "react-redux";
-import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
-
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
@@ -13,13 +12,15 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 import UserMarker from "../../components/common/marker/UserMarker";
 import { change as TourChange } from "../../store/features/main/tourList/openSlice";
-import { getMarker } from "../../store/features/main/marker/markerSlice";
+  
+import {
+  getMarker,
+} from "../../store/features/main/marker/markerSlice";
+import { hide } from "../../store/features/main/map/tourClick";
+import { spotHide, spotShow } from "../../store/features/main/map/spotClick";
 import SpotIntro from "../../components/main/SpotIntro";
 import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
 import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
-
-import { hide } from "../../store/features/main/map/tourClick";
-import { spotHide, spotShow } from "../../store/features/main/map/spotClick";
 
 export default function Main() {
   const dispatch = useAppDispatch();
@@ -53,40 +54,16 @@ export default function Main() {
       return alert(error.message);
     }
 
-    if (!center) return;
-    setState({ center, isPanto: true });
-  }, []);
-  useEffect(() => {
-    getPostion();
-    setTimeout(() => {
-      getTourList();
-    }, 2000);
-  }, []);
+    if(!center) return;
+    setState({center,isPanto : true});
+
+  },[]);
+  // useEffect(()=>{ getPostion(); getTourList(); },[]); 주석풀기
 
   // 현재 위치를 토대로 근처의 명소 가져오기
   const getTourList = () => {
     if (!userInfo) return;
-
-    const geocoder = new kakao.maps.services.Geocoder();
-
-    geocoder.coord2Address(
-      state.center.lng,
-      state.center.lat,
-      (result, status) => {
-        if (status === kakao.maps.services.Status.OK) {
-          dispatch(
-            getTourPlace({
-              token: userInfo.token,
-              address: result[0].address.region_1depth_name,
-              page: 1,
-            }),
-          );
-        } else {
-          dispatch(TourChange(false));
-        }
-      },
-    );
-  };
+  }
 
   // 현재위치 watch
   const { location } = useWatchLocation();
