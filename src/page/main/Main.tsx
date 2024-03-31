@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
 import UserMarker from "../../components/common/marker/UserMarker";
 import { change as TourChange } from "../../store/features/main/tourList/openSlice";
+  
 import {
   getMarker,
 } from "../../store/features/main/marker/markerSlice";
@@ -23,18 +24,16 @@ import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 export default function Main() {
   const dispatch = useAppDispatch();
-  const {userInfo} = useAppSelector(state=>state.auth);
-  const [bookMark,setBookMark] = useState(false);
+  const { userInfo } = useAppSelector((state) => state.auth);
+  const [bookMark, setBookMark] = useState(false);
 
   // 마커 fetch
-  const {markers} = useAppSelector(state=>state.mainMarker);
+  const { markers } = useAppSelector((state) => state.mainMarker);
   // 마커 가져오기
-  useEffect(()=>{ 
-
-    if(!userInfo) return;
-    dispatch(getMarker(userInfo.token)); 
-
-  },[bookMark,userInfo]);
+  useEffect(() => {
+    if (!userInfo) return;
+    dispatch(getMarker(userInfo.token));
+  }, [bookMark, userInfo]);
 
   // 지도 초기위치 설정
   const [state, setState] = useState({
@@ -62,24 +61,20 @@ export default function Main() {
   // useEffect(()=>{ getPostion(); getTourList(); },[]); 주석풀기
 
   // 현재 위치를 토대로 근처의 명소 가져오기
-  const getTourList = ()=>{
-
-    if(!userInfo) return;
-
-    
-
+  const getTourList = () => {
+    if (!userInfo) return;
   }
 
   // 현재위치 watch
-  const {location} = useWatchLocation();
+  const { location } = useWatchLocation();
 
   return (
     <>
       <main className="relative h-screen overflow-hidden">
         {/* 검색버튼 */}
-        <div className="absolute z-50 w-full top-[30px] px-4">
-          <Input type="text" placeholder="장소를 검색해 보세요"/>
-          <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark}/>
+        <div className="absolute top-[30px] z-50 w-full px-4">
+          <Input type="text" placeholder="장소를 검색해 보세요" />
+          <MainBookMarkBtn bookMark={bookMark} setBookMark={setBookMark} />
           {/* 임시 로그아웃 버튼 */}
           <button
             onClick={() => dispatch(logout())}
@@ -120,30 +115,28 @@ export default function Main() {
           )}
 
           {/* 마커 */}
-          {
-            markers.map((e,i)=>(
-              <BlossomMarker
-                key={i+e.x+e.y}
-                position={{ lat: e.x, lng: e.y }}
-                onClick={()=>{
-                  if(!userInfo) return;
-                  // info 데이터
-                  dispatch(hide());
-                  dispatch(spotShow());
-                  dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
-                }}
-              />
-            ),
-          )}
-
+          {markers.map((e, i) => (
+            <BlossomMarker
+              key={i + e.x + e.y}
+              position={{ lat: e.x, lng: e.y }}
+              onClick={() => {
+                if (!userInfo) return;
+                // info 데이터
+                dispatch(hide());
+                dispatch(spotShow());
+                dispatch(
+                  getPlace({ token: userInfo.token, placeId: e.placeId }),
+                );
+              }}
+            />
+          ))}
         </Map>
 
         {/* 마커 관련 명소 */}
-        <SpotIntro getPostion={getPostion}/>
+        <SpotIntro getPostion={getPostion} />
 
         {/* 네비게이션바 */}
-        <Navigation/>
-
+        <Navigation />
       </main>
       <SpotView />
     </>
