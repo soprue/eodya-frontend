@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { Map} from "react-kakao-maps-sdk";
 import { useDispatch } from "react-redux";
 import { Map, MarkerClusterer } from "react-kakao-maps-sdk";
+
 import Input from "../../components/common/input/Input";
 import Navigation from "../../components/common/menu/Navigation";
 import BlossomMarker from "../../components/common/marker/BlossomMarker";
@@ -10,15 +12,17 @@ import { getCurrentLocation } from "../../utils/mapLocation/getCurrentLocation";
 import { logout } from "../../store/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { useWatchLocation } from "../../hook/mapLocation/useWatchLocation";
-import BookMarker from "../../components/common/marker/BookMarker";
 import UserMarker from "../../components/common/marker/UserMarker";
-import { change as yChange } from "../../store/features/main/spotInfo/ySlice";
 import { change as TourChange } from "../../store/features/main/tourList/openSlice";
-import { change as InfoChange } from "../../store/features/main/spotInfo/InfoSlice";
 import {
   getMarker,
-  getBookMarker,
 } from "../../store/features/main/marker/markerSlice";
+import SpotIntro from "../../components/main/SpotIntro";
+import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
+import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
+
+import { hide } from "../../store/features/main/map/tourClick";
+import { spotHide, spotShow } from "../../store/features/main/map/spotClick";
 import { SpotIntro } from "../../components/main/SpotIntro";
 import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
 import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
@@ -61,7 +65,7 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  // useEffect(()=>{ getPostion(); getTourList(); },[]); 주석풀기
+  useEffect(()=>{ getPostion(); setTimeout(()=>{getTourList()},2000) },[]);
 
   // 현재 위치를 토대로 근처의 명소 가져오기
   const getTourList = ()=>{
@@ -80,7 +84,7 @@ export default function Main() {
           })
         );
       }else{
-        console.log('error');
+        dispatch(TourChange(false));
       }
     })
 
@@ -92,7 +96,7 @@ export default function Main() {
   return (
     <>
       <main className="relative h-screen overflow-hidden">
-
+        
         {/* 검색버튼 */}
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
@@ -113,11 +117,8 @@ export default function Main() {
           style={{ width: "100%", height: "100%" }}
           level={5}
           onDragStart={() => {
-            dispatch(yChange(100)); // spotY = 100
-            setTimeout(() => {
-              dispatch(TourChange(false));
-              dispatch(InfoChange(false));
-            }, 300);
+            dispatch(hide());
+            dispatch(spotHide());
           }}
           onCenterChanged={(map) => {
             // 중심좌표 변경
@@ -147,16 +148,15 @@ export default function Main() {
                 position={{ lat: e.x, lng: e.y }}
                 onClick={()=>{
                   if(!userInfo) return;
-                  // 인포창 나오게
-                  dispatch(yChange(0));
-                  dispatch(TourChange(false));
-                  dispatch(InfoChange(true));
                   // info 데이터
+                  dispatch(hide());
+                  dispatch(spotShow());
                   dispatch(getPlace({token : userInfo.token, placeId : e.placeId}))
                 }}
               />
             ),
           )}
+
         </Map>
 
         {/* 마커 관련 명소 */}
@@ -165,7 +165,6 @@ export default function Main() {
         {/* 네비게이션바 */}
         <Navigation/>
 
-        <Navigation />
       </main>
       <SpotView />
     </>
