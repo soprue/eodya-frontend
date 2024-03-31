@@ -1,4 +1,3 @@
-import { useState } from "react";
 import {ReactComponent as BookmarkSVG} from "../../../assets/image/icon/bookmark.svg";
 
 // 메인 북마크 버튼

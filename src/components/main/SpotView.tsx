@@ -1,21 +1,61 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
-
-import TopBar from "../common/menu/TopBar";
-import { Reivew } from "./Reivew";
-import { ReactComponent as BookmarkOutline } from "../../assets/image/icon/bookmark_outline.svg";
-import { ReactComponent as Bookmark } from "../../assets/image/icon/bookmark.svg";
+import { Link } from "react-router-dom"
+import TopBar from "../common/menu/TopBar"
+import { Reivew } from "./Reivew"
+import { ReactComponent as BookmarkOutline} from "../../assets/image/icon/bookmark_outline.svg";
+import { ReactComponent as Bookmark} from "../../assets/image/icon/bookmark.svg";
+import { useEffect, useState } from "react";
 import FlowerTag from "../common/tag/FlowerTag";
 import ShareBtn from "../common/btn/Share/ShareBtn";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { close } from "../../store/features/main/spotView/slice";
+import axios from "axios";
+import { start } from "repl";
+
+interface ReviewInterface {
+  reviewTotalCount: number;
+  reviewDetailList: ReviewDetailList[];
+  hasNext: boolean;
+}
+
+export interface ReviewDetailList {
+  userId: number;
+  nickName: string;
+  reviewDate: string;
+  reviewImage: string[];
+  placeStatus: string;
+  reviewContent: string;
+}
 
 // 스팟상세
 export const SpotView = () => {
   const [bookmark, setBookmark] = useState(false);
-
-  const viewShow = useAppSelector((state) => state.spotView);
   const dispatch = useAppDispatch();
+  const {userInfo} = useAppSelector(state=>state.auth);
+  const viewShow = useAppSelector(state=>state.spotView);
+  const {info} = useAppSelector(start=>start.InfoPlace);
+  const [review,setReview] = useState<ReviewInterface>();
+
+  useEffect(()=>{
+
+    if(viewShow){
+
+      axios.get(`/api/v1/review?placeId=${info.placeId}&page=1&size=10`,{
+        headers : {
+          Authorization : userInfo?.token,
+          "Content-Type" : "application/json"
+        }
+      })
+      .then(({data})=>{
+        console.log(data);
+        setReview(data);
+      })
+      .catch(err=>{
+        
+      })
+
+    }
+
+  },[info,viewShow])
 
   return (
     <div
@@ -52,51 +92,29 @@ export const SpotView = () => {
         <div className="relative z-10 bg-gray-100">
           <div className="flex items-center justify-between bg-white px-4 pb-5 pt-5">
             <dl>
-              <dt className="flex items-start text-xl font-bold tracking-custom text-gray-950">
-                애기능 동산{" "}
-                <div className="ml-2 inline-block leading-none">
-                  <FlowerTag placeState="개화" />
-                </div>
+              <dt className="text-xl font-bold text-gray-950 tracking-custom flex items-start">
+                {info.name} <div className="ml-2 inline-block leading-none"><FlowerTag placeState="개화"/></div>
               </dt>
-              <dd className="mt-2 text-sm font-normal leading-[21px]  tracking-custom">
-                서울 성복구 안암로 73-15{" "}
-                <span className="text-[13px] font-semibold leading-none text-info-300">
-                  820m
-                </span>
+              <dd className="mt-2 tracking-custom font-normal text-sm  leading-[21px]">
+                {info.addressDetail} 
+                {/* <span className="text-[13px] leading-none font-semibold text-info-300">820m</span> */}
               </dd>
             </dl>
-            <Link
-              to={"/new/review"}
-              className={`flex h-8 w-[87px] items-center justify-center rounded-full bg-primary text-xs font-semibold text-white`}
-            >
-              후기 남기기
-            </Link>
+            <Link 
+              to={`/new/review/${info.placeId}`} 
+              className={`bg-primary text-white w-[87px] h-8 flex items-center justify-center text-xs font-semibold rounded-full`}
+            >후기 남기기</Link>
           </div>
-
-          <div className="mt-2 bg-white px-4 py-6 ">
-            <p className="mb-3 text-sm font-normal tracking-custom">
-              후기 <span className="text-primary">14</span>개
+    
+          <div className="mt-2 bg-white py-6 px-4 ">
+            <p className="font-normal text-sm tracking-custom mb-3">
+              후기 <span className="text-primary">{ review?.reviewDetailList && review?.reviewDetailList.length > 0 ? review?.reviewTotalCount : 0}</span>개
             </p>
-            {[
-              {
-                placeState: "만개",
-                image: [0, 1],
-              },
-              {
-                placeState: "개화",
-                image: [0],
-              },
-              {
-                placeState: "내년에 만나요",
-                image: [0, 1],
-              },
-              {
-                placeState: "개화",
-                image: [0],
-              },
-            ].map((e, i) => (
-              <Reivew key={i} item={e} index={i} />
-            ))}
+            {
+              review?.reviewDetailList.map((e,i)=>
+                <Reivew item={e} index={i} key={i} />
+              )
+            }
           </div>
         </div>
       </div>
