@@ -59,7 +59,7 @@ export default function Main() {
     setState({center,isPanto : true});
 
   },[]);
-  useEffect(()=>{ getPostion(); setTimeout(()=>{getTourList()},2000) },[]);
+  // useEffect(()=>{ getPostion(); getTourList(); },[]); 주석풀기
 
   // 현재 위치를 토대로 근처의 명소 가져오기
   const getTourList = ()=>{
@@ -76,7 +76,6 @@ export default function Main() {
   return (
     <>
       <main className="relative h-screen overflow-hidden">
-        
         {/* 검색버튼 */}
         <div className="absolute z-50 w-full top-[30px] px-4">
           <Input type="text" placeholder="장소를 검색해 보세요"/>
