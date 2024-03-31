@@ -1,4 +1,6 @@
-import { useEffect, useState, Suspense, lazy } from "react";
+
+// import SplashScreen from './components/layout/SplashScreen';
+import { useEffect, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "./store/store";
@@ -12,7 +14,8 @@ import PublicRoute from "./components/login/PublicRoute";
 import Main from "./page/main/Main";
 import LoginPage from "./page/login/Login";
 import Spinner from "./components/common/spinner/Spinner";
-const Mypage = lazy(() => import("./page/mypage/Mypage"));
+const Mypage = lazy(() => import("./page/mypage/BookMark"));
+const Review = lazy(() => import("./page/mypage/Review"));
 const NewReviewPage = lazy(() => import("./page/new/Review"));
 const NewSpotPage = lazy(() => import("./page/new/Spot"));
 const NotFound = lazy(() => import("./page/404/NotFound"));
@@ -62,6 +65,8 @@ function App() {
     >
       <Routes>
         <Route element={<Layout />}>
+          <Route path="/new/review" element={<NewReviewPage />} />
+          <Route path="/new/spot" element={<NewSpotPage />} />
           <Route index element={<Main />} />
 
           {/* Public Routes */}
@@ -104,6 +109,14 @@ function App() {
             element={
               <PrivateRoute>
                 <Mypage />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path="/mypage/review"
+            element={
+              <PrivateRoute>
+                <Review />
               </PrivateRoute>
             }
           />

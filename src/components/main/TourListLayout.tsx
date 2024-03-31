@@ -1,4 +1,5 @@
 import { PlaceDetail } from "../../store/features/main/tourList/tourPlace"
+import { ReviewDetailList } from "../../store/features/main/tourList/tourPlace"
 import { BookMarkBtn } from "../common/btn/BookMarkBtn"
 import FlowerTag from "../common/tag/FlowerTag"
 

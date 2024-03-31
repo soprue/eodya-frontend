@@ -1,13 +1,17 @@
 import { useCallback, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
+import InfiniteScroll from "react-infinite-scroller";
+import { start } from "repl";
+
 import TopBar from "../common/menu/TopBar";
 import { Reivew } from "./Reivew";
+import { ReactComponent as BookmarkOutline} from "../../assets/image/icon/bookmark_outline.svg";
+import { ReactComponent as Bookmark} from "../../assets/image/icon/bookmark.svg";
 import FlowerTag from "../common/tag/FlowerTag";
 import ShareBtn from "../common/btn/Share/ShareBtn";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
 import { close } from "../../store/features/main/spotView/slice";
-import axios from "axios";
-import InfiniteScroll from "react-infinite-scroller";
 
 interface ReviewInterface {
   reviewTotalCount: number;
@@ -24,9 +28,8 @@ export interface ReviewDetailList {
   reviewContent: string;
 }
 
-
-// 스팟상세
 export const SpotView = () => {
+  const [bookmark, setBookmark] = useState(false);
   const dispatch = useAppDispatch();
   const {userInfo} = useAppSelector(state=>state.auth);
   const viewShow = useAppSelector(state=>state.spotView);
