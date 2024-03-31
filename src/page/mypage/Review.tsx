@@ -101,16 +101,17 @@ export default function BookMark() {
             </div>
           </div>
 
-          <div className="h-full overflow-y-auto">
+          <div className="overflow-y-auto h-full scrollbar-hide">
             <InfiniteScroll
               pageStart={1}
               loadMore={loadMore}
               hasMore={hasNext}
-              loader={
-                <div className="flex h-96 w-full items-center justify-center">
-                  <Spinner />
-                </div>
-              }
+              loader={<div className='text-center' key={0}>로딩중입니다...</div>}
+              // loader={
+              //   <div className="flex h-96 w-full items-center justify-center">
+              //     <Spinner />
+              //   </div>
+              // }
               useWindow={false}
             >
               {reivews.map((reivew, i) => (
