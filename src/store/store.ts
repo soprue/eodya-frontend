@@ -10,6 +10,8 @@ import spotInfoOpen from "./features/main/spotInfo/InfoSlice";
 import tourOpen from "./features/main/tourList/openSlice";
 import InfoPlace from "./features/main/spotInfo/InfoPlace";
 import tourPlace from "./features/main/tourList/tourPlace";
+import tourClick from "./features/main/map/tourClick";
+import spotClick from "./features/main/map/spotClick";
 
 
 const persistConfig = {
@@ -26,7 +28,9 @@ const rootReducer = combineReducers({
   tourOpen,
   mainMarker,
   InfoPlace,
-  tourPlace
+  tourClick,
+  spotClick,
+  tourPlace, // 주변 명소
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

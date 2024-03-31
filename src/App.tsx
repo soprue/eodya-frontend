@@ -1,4 +1,3 @@
-
 // import SplashScreen from './components/layout/SplashScreen';
 import { useEffect, Suspense, lazy } from "react";
 import { Route, Routes, useNavigate } from "react-router-dom";
@@ -65,8 +64,6 @@ function App() {
     >
       <Routes>
         <Route element={<Layout />}>
-          <Route path="/new/review" element={<NewReviewPage />} />
-          <Route path="/new/spot" element={<NewSpotPage />} />
           <Route index element={<Main />} />
 
           {/* Public Routes */}
