@@ -28,9 +28,9 @@ const rootReducer = combineReducers({
   tourOpen,
   mainMarker,
   InfoPlace,
-  tourPlace,
   tourClick,
-  spotClick
+  spotClick,
+  tourPlace, // 주변 명소
 });
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

@@ -47,6 +47,8 @@ export const SpotView = () => {
     })
       .then(({data} : {data : ReviewInterface})=>{
 
+        console.log(data);
+
         setReviewTotalCount(data.reviewTotalCount);
 
         setHasNext(data.hasNext);

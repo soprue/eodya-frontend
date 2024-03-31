@@ -7,7 +7,7 @@ export interface TourPlaceType {
         placeDetails: PlaceDetail[];
         hasNext: boolean;
     }
-    error : boolean
+    error : null | string
 }
 
 export interface PlaceDetail {
@@ -25,7 +25,7 @@ const initialState :TourPlaceType = {
         placeDetails: [],
         hasNext: false
     },
-    error : false,
+    error : null,
 }
 
 export const getTourPlace = 
@@ -42,6 +42,7 @@ createAsyncThunk(
     });
 
     const {data} = response;
+    
     return data;
 
 });
@@ -52,14 +53,15 @@ const tourPlace = createSlice({
     reducers : {},
     extraReducers : (builder) => {
         builder
-        .addCase(getTourPlace.pending,(state,action)=>{
+        .addCase(getTourPlace.pending,(state)=>{
             state.loading = false;
         })
         .addCase(getTourPlace.fulfilled,(state,action)=>{
-            state.data = action.payload;
+            state.data.placeDetails = [...state.data.placeDetails,...action.payload.placeDetails];
+            state.data.hasNext = action.payload.hasNext;
         })
-        .addCase(getTourPlace.rejected,(state,action)=>{
-            state.error = true;
+        .addCase(getTourPlace.rejected,(state)=>{
+            state.error = "error01";
         })
     },
 });

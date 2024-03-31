@@ -9,6 +9,7 @@ import TopBar from "../common/menu/TopBar";
 import { prevClick, upClick } from "../../store/features/main/map/tourClick";
 import { open } from "../../store/features/main/spotView/slice";
 import { getPlace } from "../../store/features/main/spotInfo/InfoPlace";
+import { getTourPlace } from "../../store/features/main/tourList/tourPlace";
 
 export interface RootInterface {
   placeDetails: PlaceDetail[];
@@ -43,15 +44,24 @@ export function TourList(){
   }
 
   // 무한 스크롤
-  const [place, setPlace] = useState<PlaceDetail[]>([]);
-  // const [place, setPlace] = useState<any[]>([]); // 테스트용
-  const [hasNext, setHasNext] = useState(true);
   const [page, setPage] = useState(1);
-  /* const loadMore = useCallback(()=>{
 
-    // console.log(1);
+  const {data : {placeDetails : place, hasNext}} = useAppSelector((state)=>state.tourPlace);
 
-    axios(`/api/v1/user/my/bookmarks?page=${page}&size=10`,{
+  useEffect(()=>{
+
+    if(!userInfo) return;
+
+    dispatch(getTourPlace({token : userInfo.token, address : "서울", page}));
+
+  },[page])
+
+  const loadMore = useCallback(()=>{
+
+    console.log('가져옴');
+    console.log(hasNext);
+
+    /* axios(`/api/v1/user/my/bookmarks?page=${page}&size=10`,{
       headers : {
         Authorization : userInfo?.token
       }
@@ -71,10 +81,10 @@ export function TourList(){
         setHasNext(false);
         console.error('Error fetching data:', error);
     });
+ */
+  },[]);
 
-  },[]); */
-
-  useEffect(()=>{
+/*   useEffect(()=>{
     axios.post(`/api/v1/place/search?page=${page}&size=10`,{address : "서울"},{
       headers : {
         Authorization : userInfo?.token
@@ -95,7 +105,7 @@ export function TourList(){
         setHasNext(false);
         console.error('Error fetching data:', error);
     });
-  },[])
+  },[]) */
 
   const spotViewOpen=(e : PlaceDetail)=>{
     if(!userInfo) return;
@@ -134,14 +144,14 @@ export function TourList(){
           {
             place.map((e,i)=><TourListLayout onClick={()=>spotViewOpen(e)} item={e} key={i} />)
           }
-          {/* <InfiniteScroll
+{/*           <InfiniteScroll
             pageStart={1}
             loadMore={loadMore}
             hasMore={hasNext}
             loader={<div className='text-center' key={0}>로딩중입니다...</div>}
             useWindow={false}
           >
-            
+            aaaa
           </InfiniteScroll> */}
         </div>
       </div>
